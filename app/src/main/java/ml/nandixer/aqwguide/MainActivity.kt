@@ -3,6 +3,9 @@ package ml.nandixer.aqwguide
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.LinearOutSlowInEasing
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -73,7 +76,10 @@ fun ClassListItem(theClass: CombatClass, viewModel: MainViewModel){
     val isExpanded = theClass.abbr == viewModel.chosenClass.value
 
     ElevatedCard(
-        modifier = Modifier.padding(8.dp),
+        modifier = Modifier.padding(8.dp)
+            .animateContentSize(animationSpec = tween(
+                easing = LinearOutSlowInEasing
+            )),
         onClick = {
             viewModel.chooseClass(theClass.abbr)
         }
