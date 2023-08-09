@@ -17,6 +17,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -65,6 +67,7 @@ fun MainScreenList(viewModel: MainViewModel){
 @Composable
 fun ClassListItem(theClass: CombatClass){
     val ratings = theClass.ratings
+    val altNames = theClass.names.drop(1).joinToString (" | ")
     ElevatedCard(
         modifier = Modifier.padding(8.dp)
     ) {
@@ -73,6 +76,9 @@ fun ClassListItem(theClass: CombatClass){
                 .fillMaxWidth()
         ) {
             Text(theClass.names[0], fontSize = 24.sp)
+            if (altNames.isNotEmpty()){
+                Text(text = altNames, fontSize = 12.sp, fontStyle = FontStyle.Italic)
+            }
             Text(text = "Damage: ${ratings.damage}, Survival: ${ratings.survival}, Support: ${ratings.support}")
             Text(text = "Farming: ${ratings.farming}, PvP: ${ratings.pvp}, Ultras: ${ratings.ultras}")
         }
