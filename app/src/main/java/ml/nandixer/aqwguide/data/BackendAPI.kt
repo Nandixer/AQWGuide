@@ -4,6 +4,6 @@ import ml.nandixer.aqwguide.domain.model.CombatClass
 import retrofit2.http.GET
 
 interface BackendAPI {
-    @GET("/classes.json")
+    @GET("/Nandixer/aqw-app-backend/master/classes.json")
     suspend fun getClasses(): List<CombatClass>
 }

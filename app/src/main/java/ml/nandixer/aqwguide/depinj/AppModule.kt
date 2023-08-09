@@ -19,7 +19,7 @@ object AppModule {
     @Singleton
     fun providesHappeningAPI(): BackendAPI{
         return Retrofit.Builder()
-            .baseUrl("https://raw.githubusercontent.com/Nandixer/aqw-app-backend/master/")
+            .baseUrl("http://raw.githubusercontent.com/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(BackendAPI::class.java)
