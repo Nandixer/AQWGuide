@@ -7,8 +7,11 @@ import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -21,6 +24,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.tooling.preview.Preview
@@ -72,14 +76,19 @@ fun MainScreenList(viewModel: MainViewModel){
 @Composable
 fun ClassListItem(theClass: CombatClass, viewModel: MainViewModel){
     val ratings = theClass.ratings
+    val enh = theClass.enhancements[0]
     val altNames = theClass.names.drop(1).joinToString (" | ")
     val isExpanded = theClass.abbr == viewModel.chosenClass.value
+    val dps = theClass.enhancements[0].dps
 
     ElevatedCard(
-        modifier = Modifier.padding(8.dp)
-            .animateContentSize(animationSpec = tween(
-                easing = LinearOutSlowInEasing
-            )),
+        modifier = Modifier
+            .padding(8.dp)
+            .animateContentSize(
+                animationSpec = tween(
+                    easing = LinearOutSlowInEasing
+                )
+            ),
         onClick = {
             viewModel.chooseClass(theClass.abbr)
         }
@@ -87,15 +96,71 @@ fun ClassListItem(theClass: CombatClass, viewModel: MainViewModel){
         Column(
             modifier = Modifier
                 .fillMaxWidth()
+                .padding(8.dp)
         ) {
             Text(theClass.names[0], fontSize = 24.sp)
             if (altNames.isNotEmpty()){
                 Text(text = altNames, fontSize = 12.sp, fontStyle = FontStyle.Italic)
             }
-            Text(text = "Damage: ${ratings.damage}, Survival: ${ratings.survival}, Support: ${ratings.support}")
-            Text(text = "Farming: ${ratings.farming}, PvP: ${ratings.pvp}, Ultras: ${ratings.ultras}")
             if (isExpanded){
-                Text("hi")
+                Spacer(modifier = Modifier.height(16.dp))
+                Text(text = "Damage: ${ratings.damage}, Survival: ${ratings.survival}, Support: ${ratings.support}")
+                Text(text = "Farming: ${ratings.farming}, PvP: ${ratings.pvp}, Ultras: ${ratings.ultras}")
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Text(text = "Weapon: ${enh.weapon}")
+                Text(text = "Class: ${enh.armor}")
+                Text(text = "Helm: ${enh.helm}")
+                Text(text = "Cape: ${enh.cape}")
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                // damage tests
+                if (dps.classhall != null){
+                    Row {
+                        Text(text = "Classhall DPS:")
+                        Spacer(modifier = Modifier.weight(1.0f))
+                        Text(dps.classhall.toString())
+                    }
+                }
+
+                if (dps.classhallNsod != null){
+                    Row {
+                        Text(text = "Classhall DPS +51%:")
+                        Spacer(modifier = Modifier.weight(1.0f))
+                        if (dps.classhall != null) {
+                            val percent = dps.classhallNsod!!.toFloat() / dps.classhall!!.toFloat()
+                            val growth = (percent*100-100).toInt()
+                            Text(text = "+$growth% ", color = Color.Green)
+                        }
+                        Text(dps.classhallNsod.toString())
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                if (dps.revenant != null){
+                    Row {
+                        Text(text = "Revenant KPM:")
+                        Spacer(modifier = Modifier.weight(1.0f))
+                        Text(dps.revenant.toString())
+                    }
+                }
+
+                if (dps.revenantNsod != null){
+                    Row {
+                        Text(text = "Revenant KPM +51%:")
+                        Spacer(modifier = Modifier.weight(1.0f))
+                        if (dps.revenant != null) {
+                            val percent = dps.revenantNsod!!.toFloat() / dps.revenant!!.toFloat()
+                            val growth = (percent*100-100).toInt()
+                            Text(text = "+$growth% ", color = Color.Green)
+                        }
+                        Text(dps.revenantNsod.toString())
+                    }
+                }
+
             }
         }
     }
