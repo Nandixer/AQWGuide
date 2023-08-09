@@ -1,5 +1,6 @@
 package ml.nandixer.aqwguide.presentation
 
+import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -17,7 +18,14 @@ class MainViewModel @Inject constructor(
 ): ViewModel() {
 
     private val _classes = mutableStateOf(listOf<CombatClass>())
-    val classes = _classes
+    val classes: State<List<CombatClass>> = _classes
+
+    private val _chosenClass = mutableStateOf("")
+    val chosenClass: State<String> = _chosenClass
+
+    fun chooseClass(classAbbr: String){
+        _chosenClass.value = classAbbr
+    }
 
     init {
         getClassesUseCase().onEach { result ->

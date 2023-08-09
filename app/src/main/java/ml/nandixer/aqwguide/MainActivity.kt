@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -57,19 +58,25 @@ fun MainScreenList(viewModel: MainViewModel){
             .fillMaxWidth()
     ){
         items(classes){theClass ->
-            ClassListItem(theClass)
+            ClassListItem(theClass, viewModel)
         }
 
     }
 
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ClassListItem(theClass: CombatClass){
+fun ClassListItem(theClass: CombatClass, viewModel: MainViewModel){
     val ratings = theClass.ratings
     val altNames = theClass.names.drop(1).joinToString (" | ")
+    val isExpanded = theClass.abbr == viewModel.chosenClass.value
+
     ElevatedCard(
-        modifier = Modifier.padding(8.dp)
+        modifier = Modifier.padding(8.dp),
+        onClick = {
+            viewModel.chooseClass(theClass.abbr)
+        }
     ) {
         Column(
             modifier = Modifier
@@ -81,6 +88,9 @@ fun ClassListItem(theClass: CombatClass){
             }
             Text(text = "Damage: ${ratings.damage}, Survival: ${ratings.survival}, Support: ${ratings.support}")
             Text(text = "Farming: ${ratings.farming}, PvP: ${ratings.pvp}, Ultras: ${ratings.ultras}")
+            if (isExpanded){
+                Text("hi")
+            }
         }
     }
 }
