@@ -105,8 +105,9 @@ fun ClassListItem(theClass: CombatClass, viewModel: MainViewModel){
             if (altNames.isNotEmpty()){
                 Text(text = altNames, fontSize = 12.sp, fontStyle = FontStyle.Italic)
             }
-            if (isExpanded){
+            if (isExpanded) {
                 Spacer(modifier = Modifier.height(16.dp))
+
                 Text(text = "Damage: ${ratings.damage}, Survival: ${ratings.survival}, Support: ${ratings.support}")
                 Text(text = "Farming: ${ratings.farming}, PvP: ${ratings.pvp}, Ultras: ${ratings.ultras}")
 
@@ -120,53 +121,63 @@ fun ClassListItem(theClass: CombatClass, viewModel: MainViewModel){
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                // damage tests
-                if (dps.classhall != null){
-                    Row {
-                        Text(text = "Classhall DPS:")
-                        Spacer(modifier = Modifier.weight(1.0f))
-                        Text(dps.classhall.toString())
-                    }
-                }
-
-                if (dps.classhallNsod != null){
-                    Row {
-                        Text(text = "Classhall DPS +51%:")
-                        Spacer(modifier = Modifier.weight(1.0f))
-                        if (dps.classhall != null) {
-                            val percent = dps.classhallNsod!!.toFloat() / dps.classhall!!.toFloat()
-                            val growth = (percent*100-100).toInt()
-                            Text(text = "+$growth% ", color = Color.Green)
+                Column(
+                    modifier = Modifier.background(color = Color.White)
+                ) {
+                    // damage tests
+                    if (dps.classhall != null) {
+                        Row {
+                            Text(text = "Classhall DPS:")
+                            Spacer(modifier = Modifier.weight(1.0f))
+                            Text(dps.classhall.toString())
                         }
-                        Text(dps.classhallNsod.toString())
                     }
-                }
 
-                Spacer(modifier = Modifier.height(8.dp))
-
-                if (dps.revenant != null){
-                    Row {
-                        Text(text = "Revenant KPM:")
-                        Spacer(modifier = Modifier.weight(1.0f))
-                        Text(dps.revenant.toString())
-                    }
-                }
-
-                if (dps.revenantNsod != null){
-                    Row {
-                        Text(text = "Revenant KPM +51%:")
-                        Spacer(modifier = Modifier.weight(1.0f))
-                        if (dps.revenant != null) {
-                            val percent = dps.revenantNsod!!.toFloat() / dps.revenant!!.toFloat()
-                            val growth = (percent*100-100).toInt()
-                            Text(text = "+$growth% ", color = Color.Green)
+                    if (dps.classhallNsod != null) {
+                        Row {
+                            Text(text = "Classhall DPS +51%:")
+                            Spacer(modifier = Modifier.weight(1.0f))
+                            if (dps.classhall != null) {
+                                val percent =
+                                    dps.classhallNsod!!.toFloat() / dps.classhall!!.toFloat()
+                                val growth = (percent * 100 - 100).toInt()
+                                Text(text = "+$growth% ", color = Color.Green)
+                            }
+                            Text(dps.classhallNsod.toString())
                         }
-                        Text(dps.revenantNsod.toString())
+                    }
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    if (dps.revenant != null) {
+                        Row {
+                            Text(text = "Revenant KPM:")
+                            Spacer(modifier = Modifier.weight(1.0f))
+                            Text(dps.revenant.toString())
+                        }
+                    }
+
+                    if (dps.revenantNsod != null) {
+                        Row {
+                            Text(text = "Revenant KPM +51%:")
+                            Spacer(modifier = Modifier.weight(1.0f))
+                            if (dps.revenant != null) {
+                                val percent =
+                                    dps.revenantNsod!!.toFloat() / dps.revenant!!.toFloat()
+                                val growth = (percent * 100 - 100).toInt()
+                                Text(text = "+$growth% ", color = Color.Green)
+                            }
+                            Text(dps.revenantNsod.toString())
+                        }
                     }
                 }
 
                 Spacer(modifier = Modifier.height(16.dp))
-                Text(theClass.tags.joinToString ( ", " ), fontSize = 12.sp, fontStyle = FontStyle.Italic)
+                Text(
+                    theClass.tags.joinToString(", "),
+                    fontSize = 12.sp,
+                    fontStyle = FontStyle.Italic
+                )
 
             }
         }
