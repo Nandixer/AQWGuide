@@ -173,6 +173,18 @@ fun ClassListItem(theClass: CombatClass, viewModel: MainViewModel){
                 }
 
                 Spacer(modifier = Modifier.height(16.dp))
+
+                val regex = "^[\\d\\s]+$".toRegex()
+                for (line in theClass.combo){
+                    if (regex.matches(line)){
+                        Text(line, fontSize = 24.sp)
+                    }else{
+                        Text(line)
+                    }
+
+                }
+
+                Spacer(modifier = Modifier.height(16.dp))
                 Text(
                     theClass.tags.joinToString(", "),
                     fontSize = 12.sp,

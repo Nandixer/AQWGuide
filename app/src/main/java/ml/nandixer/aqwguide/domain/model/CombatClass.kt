@@ -5,5 +5,6 @@ data class CombatClass(
     val tags: List<String>,
     val enhancements: List<Enhancement>,
     val names: List<String>,
-    val ratings: Ratings
+    val ratings: Ratings,
+    val combo: List<String>
 )
