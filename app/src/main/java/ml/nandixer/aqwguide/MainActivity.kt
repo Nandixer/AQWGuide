@@ -161,6 +161,9 @@ fun ClassListItem(theClass: CombatClass, viewModel: MainViewModel){
                     }
                 }
 
+                Spacer(modifier = Modifier.height(16.dp))
+                Text(theClass.tags.joinToString ( ", " ), fontSize = 12.sp, fontStyle = FontStyle.Italic)
+
             }
         }
     }
