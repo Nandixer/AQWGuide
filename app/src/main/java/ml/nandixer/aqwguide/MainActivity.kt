@@ -6,6 +6,8 @@ import androidx.activity.compose.setContent
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -14,6 +16,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ElevatedCard
@@ -109,10 +112,11 @@ fun ClassListItem(theClass: CombatClass, viewModel: MainViewModel){
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                Text(text = "Weapon: ${enh.weapon}")
-                Text(text = "Class: ${enh.armor}")
-                Text(text = "Helm: ${enh.helm}")
-                Text(text = "Cape: ${enh.cape}")
+
+                Enhancements(text = enh.weapon)
+                Enhancements(text = enh.armor)
+                Enhancements(text = enh.helm)
+                Enhancements(text = enh.cape)
 
                 Spacer(modifier = Modifier.height(16.dp))
 
@@ -167,4 +171,19 @@ fun ClassListItem(theClass: CombatClass, viewModel: MainViewModel){
             }
         }
     }
+}
+
+@Composable
+fun Enhancements(text: String){
+    Text(text = text,
+        color = Color.White,
+        modifier = Modifier
+            .background(Color.Black)
+            .fillMaxWidth()
+            .height(32.dp)
+            .border(1.dp, Color.Gray)
+            .padding(start = 8.dp)
+            .wrapContentHeight(align = Alignment.CenterVertically)
+
+    )
 }
