@@ -14,7 +14,7 @@ class GetClassesUseCase @Inject constructor(
     operator fun invoke(): Flow<Resource<List<CombatClass>>> = flow {
         emit(Resource.Loading())
         try {
-            val classes = repository.getClasses()
+            val classes = repository.getClasses().sortedBy { it.abbr }
             emit(Resource.Success(classes))
 
         } catch (e: Exception){
