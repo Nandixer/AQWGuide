@@ -5,5 +5,5 @@ import androidx.compose.runtime.Composable
 
 @Composable
 fun FarmsScreen(viewModel: MainViewModel){
-    Text("Farms")
+    Text("This place is for farming guides. Coming soon.")
 }

@@ -85,7 +85,6 @@ sealed class BottomBarScreen(
 class MainActivity : ComponentActivity() {
 
 
-    @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -125,8 +124,8 @@ class MainActivity : ComponentActivity() {
                                 }
                             }
                         }
-                    ) {
-                        BottomNavGraph(navController = navController, viewModel = viewModel)
+                    ) {paddingValues ->
+                        BottomNavGraph(navController = navController, viewModel = viewModel, modifier = Modifier.padding(bottom = paddingValues.calculateBottomPadding()))
 
                     }
                 }
@@ -136,8 +135,8 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun BottomNavGraph(navController: NavHostController, viewModel: MainViewModel){
-    NavHost(navController = navController, startDestination = BottomBarScreen.Classes.route){
+fun BottomNavGraph(navController: NavHostController, viewModel: MainViewModel, modifier: Modifier){
+    NavHost(navController = navController, startDestination = BottomBarScreen.Classes.route, modifier){
         composable(route = BottomBarScreen.Classes.route){
             ClassesScreen(viewModel = viewModel)
         }
