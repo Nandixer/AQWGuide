@@ -128,19 +128,8 @@ class MainActivity : ComponentActivity() {
                                 }
                             }
                         },
-                        topBar = {
-                            var text by rememberSaveable{viewModel.classSearchText}
-                            TextField(
-                                value = text,
-                                placeholder = {Text("Search class name, abbreviation, or tags...")},
-                                onValueChange = {
-                                    text = it
-                                },
-                                modifier = Modifier.fillMaxWidth()
-                            )
-                        }
                     ) {paddingValues ->
-                        BottomNavGraph(navController = navController, viewModel = viewModel, modifier = Modifier.padding(bottom = paddingValues.calculateBottomPadding(), top = paddingValues.calculateTopPadding()))
+                        BottomNavGraph(navController = navController, viewModel = viewModel, modifier = Modifier.padding(bottom = paddingValues.calculateBottomPadding()))
 
                     }
                 }
@@ -149,11 +138,27 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BottomNavGraph(navController: NavHostController, viewModel: MainViewModel, modifier: Modifier){
     NavHost(navController = navController, startDestination = BottomBarScreen.Classes.route, modifier){
         composable(route = BottomBarScreen.Classes.route){
-            ClassesScreen(viewModel = viewModel)
+            Scaffold(
+                topBar = {
+                    var text by rememberSaveable{viewModel.classSearchText}
+                    TextField(
+                        value = text,
+                        placeholder = {Text("Search class name, abbreviation, or tags...")},
+                        onValueChange = {
+                            text = it
+                        },
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
+            ) {paddingValues ->
+                ClassesScreen(viewModel = viewModel, modifier = Modifier.padding(top = paddingValues.calculateTopPadding()))
+            }
+
         }
         composable(route = BottomBarScreen.Ultras.route){
             UltrasScreen(viewModel = viewModel)

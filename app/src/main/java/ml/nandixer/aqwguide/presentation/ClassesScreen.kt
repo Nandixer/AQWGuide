@@ -8,11 +8,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 
 @Composable
-fun ClassesScreen(viewModel: MainViewModel){
+fun ClassesScreen(viewModel: MainViewModel, modifier: Modifier){
     val classes = viewModel.filteredClasses.value
     LazyColumn(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
     ){
         items(classes){theClass ->
