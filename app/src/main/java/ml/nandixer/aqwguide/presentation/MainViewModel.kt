@@ -1,7 +1,9 @@
 package ml.nandixer.aqwguide.presentation
 
 import androidx.compose.runtime.State
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.text.toLowerCase
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -28,6 +30,15 @@ class MainViewModel @Inject constructor(
     }
 
     val classSearchText = mutableStateOf("")
+
+    val filteredClasses = derivedStateOf {
+        classes.value.filter { combatClass ->
+            val filterStr = classSearchText.value.lowercase()
+            filterStr in combatClass.names.joinToString(" ").lowercase() ||
+            filterStr in combatClass.abbr.lowercase() ||
+            filterStr in combatClass.tags.joinToString(" ").lowercase()
+        }
+    }
 
     init {
         getClassesUseCase().onEach { result ->
