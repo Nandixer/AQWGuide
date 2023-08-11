@@ -2,6 +2,7 @@ package ml.nandixer.aqwguide.presentation
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.widget.EditText
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.animateContentSize
@@ -34,8 +35,11 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -123,9 +127,20 @@ class MainActivity : ComponentActivity() {
                                     )
                                 }
                             }
+                        },
+                        topBar = {
+                            var text by rememberSaveable{viewModel.classSearchText}
+                            TextField(
+                                value = text,
+                                placeholder = {Text("Search class name, abbreviation, or tags...")},
+                                onValueChange = {
+                                    text = it
+                                },
+                                modifier = Modifier.fillMaxWidth()
+                            )
                         }
                     ) {paddingValues ->
-                        BottomNavGraph(navController = navController, viewModel = viewModel, modifier = Modifier.padding(bottom = paddingValues.calculateBottomPadding()))
+                        BottomNavGraph(navController = navController, viewModel = viewModel, modifier = Modifier.padding(bottom = paddingValues.calculateBottomPadding(), top = paddingValues.calculateTopPadding()))
 
                     }
                 }

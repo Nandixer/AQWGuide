@@ -27,6 +27,8 @@ class MainViewModel @Inject constructor(
         _chosenClass.value = classAbbr
     }
 
+    val classSearchText = mutableStateOf("")
+
     init {
         getClassesUseCase().onEach { result ->
             if (result is Resource.Success && result.data != null){
