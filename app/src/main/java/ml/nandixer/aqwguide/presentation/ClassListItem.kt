@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.material3.Divider
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
@@ -28,10 +29,8 @@ import ml.nandixer.aqwguide.domain.model.CombatClass
 @Composable
 fun ClassListItem(theClass: CombatClass, viewModel: MainViewModel){
     val ratings = theClass.ratings
-    val enh = theClass.enhancements[0]
     val altNames = theClass.names.drop(1).joinToString (" | ")
     val isExpanded = theClass.abbr == viewModel.chosenClass.value
-    val dps = theClass.enhancements[0].dps
 
     ElevatedCard(
         modifier = Modifier
@@ -62,66 +61,80 @@ fun ClassListItem(theClass: CombatClass, viewModel: MainViewModel){
 
                 Spacer(modifier = Modifier.height(16.dp))
 
+                for (enh in theClass.enhancements) {
+                    val dps = enh.dps
 
-                Enhancements(text = enh.weapon)
-                Enhancements(text = enh.armor)
-                Enhancements(text = enh.helm)
-                Enhancements(text = enh.cape)
-
-                Spacer(modifier = Modifier.height(16.dp))
-
-                Column(
-                    modifier = Modifier.background(color = Color.White)
-                ) {
-                    // damage tests
-                    if (dps.classhall != null) {
-                        Row {
-                            Text(text = "Classhall DPS:")
-                            Spacer(modifier = Modifier.weight(1.0f))
-                            Text(dps.classhall.toString())
-                        }
+                    if (enh.name != null){
+                        Text(enh.name)
                     }
 
-                    if (dps.classhallNsod != null) {
-                        Row {
-                            Text(text = "Classhall DPS +51%:")
-                            Spacer(modifier = Modifier.weight(1.0f))
-                            if (dps.classhall != null) {
-                                val percent =
-                                    dps.classhallNsod!!.toFloat() / dps.classhall!!.toFloat()
-                                val growth = (percent * 100 - 100).toInt()
-                                Text(text = "+$growth% ", color = Color.Green)
+                    Enhancements(text = enh.weapon)
+                    Enhancements(text = enh.armor)
+                    Enhancements(text = enh.helm)
+                    Enhancements(text = enh.cape)
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    Column(
+                        modifier = Modifier.background(color = Color(0xFFDDDDDD))
+                    ) {
+                        // damage tests
+                        if (dps.classhall != null) {
+                            Row {
+                                Text(text = "Classhall DPS:", color = Color.Black)
+                                Spacer(modifier = Modifier.weight(1.0f))
+                                Text(dps.classhall.toString(), color = Color.Black)
                             }
-                            Text(dps.classhallNsod.toString())
                         }
-                    }
 
-                    Spacer(modifier = Modifier.height(8.dp))
-
-                    if (dps.revenant != null) {
-                        Row {
-                            Text(text = "Revenant KPM:")
-                            Spacer(modifier = Modifier.weight(1.0f))
-                            Text(dps.revenant.toString())
-                        }
-                    }
-
-                    if (dps.revenantNsod != null) {
-                        Row {
-                            Text(text = "Revenant KPM +51%:")
-                            Spacer(modifier = Modifier.weight(1.0f))
-                            if (dps.revenant != null) {
-                                val percent =
-                                    dps.revenantNsod!!.toFloat() / dps.revenant!!.toFloat()
-                                val growth = (percent * 100 - 100).toInt()
-                                Text(text = "+$growth% ", color = Color.Green)
+                        if (dps.classhallNsod != null) {
+                            Row {
+                                Text(text = "Classhall DPS +51%:", color = Color.Black)
+                                Spacer(modifier = Modifier.weight(1.0f))
+                                if (dps.classhall != null) {
+                                    val percent =
+                                        dps.classhallNsod!!.toFloat() / dps.classhall!!.toFloat()
+                                    val growth = (percent * 100 - 100).toInt()
+                                    Text(text = "+$growth% ", color = Color.Green)
+                                }
+                                Text(dps.classhallNsod.toString(), color = Color.Black)
                             }
-                            Text(dps.revenantNsod.toString())
                         }
+
+                        Spacer(modifier = Modifier.height(8.dp))
+
+                        if (dps.revenant != null) {
+                            Row {
+                                Text(text = "Revenant KPM:", color = Color.Black)
+                                Spacer(modifier = Modifier.weight(1.0f))
+                                Text(dps.revenant.toString(), color = Color.Black)
+                            }
+                        }
+
+                        if (dps.revenantNsod != null) {
+                            Row {
+                                Text(text = "Revenant KPM +51%:", color = Color.Black)
+                                Spacer(modifier = Modifier.weight(1.0f))
+                                if (dps.revenant != null) {
+                                    val percent =
+                                        dps.revenantNsod!!.toFloat() / dps.revenant!!.toFloat()
+                                    val growth = (percent * 100 - 100).toInt()
+                                    Text(text = "+$growth% ", color = Color.Green)
+                                }
+                                Text(dps.revenantNsod.toString(), color = Color.Black)
+                            }
+                        }
+                    }
+
+                    if (enh != theClass.enhancements.last()) {
+                        Divider(
+                            color = Color.Gray,
+                            modifier = Modifier.padding(top = 8.dp, bottom = 8.dp)
+                        )
                     }
                 }
 
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(8.dp))
 
                 val regex = "^[\\d\\s]+$".toRegex()
                 for (line in theClass.combo){

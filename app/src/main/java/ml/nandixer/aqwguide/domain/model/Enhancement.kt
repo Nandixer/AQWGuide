@@ -5,5 +5,6 @@ data class Enhancement(
     val armor: String,
     val dps: Dps,
     val helm: String,
-    val weapon: String
+    val weapon: String,
+    val name: String?
 )
