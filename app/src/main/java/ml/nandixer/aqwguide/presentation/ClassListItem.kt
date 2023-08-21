@@ -66,53 +66,63 @@ fun ClassListItem(theClass: CombatClass, viewModel: MainViewModel){
                 Spacer(modifier = Modifier.height(16.dp))
 
                 Canvas(modifier = Modifier.fillMaxWidth(.7f).aspectRatio(1f).align(Alignment.CenterHorizontally)){
-                    //drawCircle(color = Color.Red)
+
+                    val letterToDist = mapOf("S" to 6f/6, "A" to 5f/6, "B" to 4f/6, "C" to 3f/6, "D" to 2f/6, "E" to 1f/6, "F" to 0f/6).withDefault { 0f/6 }
+
+                    val cY = size.height/2
+                    val cX = size.width/2
+
                     val path = Path().apply {
-                        val cY = size.height/2
-                        val cX = size.width/2
+                        moveTo(cX, cY-size.height/2* letterToDist[ratings.damage]!!)
+                        lineTo(cX+size.width*sqrt(3f)/2f/2*letterToDist[ratings.survival]!!, cY-size.height/2/2*letterToDist[ratings.survival]!!)
+                        lineTo(cX+size.width*sqrt(3f)/2f/2*letterToDist[ratings.farming]!!, cY+size.height/2/2*letterToDist[ratings.farming]!!)
+                        lineTo(cX, cY+size.height/2*letterToDist[ratings.pvp]!!)
+                        lineTo(cX-size.width* sqrt(3f)/2f/2*letterToDist[ratings.ultras]!!, cY+size.height/2/2*letterToDist[ratings.ultras]!!)
+                        lineTo(cX-size.width* sqrt(3f)/2f/2*letterToDist[ratings.support]!!, cY-size.height/2/2*letterToDist[ratings.support]!!)
+                        lineTo(cX, cY-size.height/2*letterToDist[ratings.damage]!!)
+                    }
 
-                        drawLine(color = Color.White,
-                            Offset(cX, cY-size.height/2),
-                            Offset(cX, cY+size.height/2),
+                    drawPath(path, color = Color.LightGray)
+
+                    drawLine(color = Color.White,
+                        Offset(cX, cY-size.height/2),
+                        Offset(cX, cY+size.height/2),
+                        strokeWidth = 4f
+                    )
+
+                    drawLine(color = Color.White,
+                        Offset(cX+size.width*sqrt(3f)/2f/2, cY-size.height/2/2),
+                        Offset(cX-size.width* sqrt(3f)/2f/2, cY+size.height/2/2),
+                        strokeWidth = 4f
+                    )
+
+                    drawLine(color = Color.White,
+                        Offset(cX+size.width*sqrt(3f)/2f/2, cY+size.height/2/2),
+                        Offset(cX-size.width* sqrt(3f)/2f/2, cY-size.height/2/2),
+                        strokeWidth = 4f
+                    )
+
+                    for (mult in 1..6){
+                        val m = mult/6f
+
+                        drawPoints(
+                            points = listOf(
+
+                                Offset(cX, cY-size.height/2*m),
+                                Offset(cX+size.width*sqrt(3f)/2f/2*m, cY-size.height/2/2*m),
+                                Offset(cX+size.width*sqrt(3f)/2f/2*m, cY+size.height/2/2*m),
+                                Offset(cX, cY+size.height/2*m),
+                                Offset(cX-size.width* sqrt(3f)/2f/2*m, cY+size.height/2/2*m),
+                                Offset(cX-size.width* sqrt(3f)/2f/2*m, cY-size.height/2/2*m),
+                                Offset(cX, cY-size.height/2*m),
+
+                            ),
+                            pointMode = PointMode.Polygon,
+                            color = Color.White,
                             strokeWidth = 4f
+
                         )
 
-                        drawLine(color = Color.White,
-                            Offset(cX+size.width*sqrt(3f)/2f/2, cY-size.height/2/2),
-                            Offset(cX-size.width* sqrt(3f)/2f/2, cY+size.height/2/2),
-                            strokeWidth = 4f
-                        )
-
-                        drawLine(color = Color.White,
-                            Offset(cX+size.width*sqrt(3f)/2f/2, cY+size.height/2/2),
-                            Offset(cX-size.width* sqrt(3f)/2f/2, cY-size.height/2/2),
-                            strokeWidth = 4f
-                        )
-
-                        for (mult in 1..6){
-                            val m = mult/6f
-
-
-
-                            drawPoints(
-                                points = listOf(
-
-                                    Offset(cX, cY-size.height/2*m),
-                                    Offset(cX+size.width*sqrt(3f)/2f/2*m, cY-size.height/2/2*m),
-                                    Offset(cX+size.width*sqrt(3f)/2f/2*m, cY+size.height/2/2*m),
-                                    Offset(cX, cY+size.height/2*m),
-                                    Offset(cX-size.width* sqrt(3f)/2f/2*m, cY+size.height/2/2*m),
-                                    Offset(cX-size.width* sqrt(3f)/2f/2*m, cY-size.height/2/2*m),
-                                    Offset(cX, cY-size.height/2*m),
-
-                                ),
-                                pointMode = PointMode.Polygon,
-                                color = Color.White,
-                                strokeWidth = 4f
-
-                            )
-
-                        }
                     }
                 }
 
