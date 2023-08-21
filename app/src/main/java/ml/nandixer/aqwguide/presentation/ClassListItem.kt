@@ -1,12 +1,15 @@
 package ml.nandixer.aqwguide.presentation
 
 import android.graphics.Point
+import android.widget.Toast
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -28,18 +31,20 @@ import androidx.compose.ui.graphics.PaintingStyle.Companion.Stroke
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.PointMode
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ml.nandixer.aqwguide.domain.model.CombatClass
 import kotlin.math.sqrt
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun ClassListItem(theClass: CombatClass, viewModel: MainViewModel){
     val ratings = theClass.ratings
     val altNames = theClass.names.drop(1).joinToString (" | ")
     val isExpanded = theClass.abbr == viewModel.chosenClass.value
+    val context = LocalContext.current
 
     ElevatedCard(
         modifier = Modifier
@@ -48,10 +53,18 @@ fun ClassListItem(theClass: CombatClass, viewModel: MainViewModel){
                 animationSpec = tween(
                     easing = LinearOutSlowInEasing
                 )
-            ),
-        onClick = {
-            viewModel.chooseClass(theClass.abbr)
-        }
+            )
+            .combinedClickable(
+                onClick = {
+                    viewModel.chooseClass(theClass.abbr)
+                },
+                onLongClick = {
+                    viewModel.chooseComparison(theClass)
+                    Toast.makeText(context, "Selected for Comparison", Toast.LENGTH_SHORT).show()
+                }
+            )
+
+
     ) {
         Column(
             modifier = Modifier
@@ -72,6 +85,26 @@ fun ClassListItem(theClass: CombatClass, viewModel: MainViewModel){
                     val cY = size.height/2
                     val cX = size.width/2
 
+                    // this is the same as below
+                    // except for opacity
+                    // todo move
+                    if (viewModel.compareClass.value != null && viewModel.compareClass.value != theClass){
+                        val otherRatings = viewModel.compareClass.value!!.ratings
+                        val path = Path().apply {
+                            moveTo(cX, cY-size.height/2* letterToDist[otherRatings.damage]!!)
+                            lineTo(cX+size.width*sqrt(3f)/2f/2*letterToDist[otherRatings.survival]!!, cY-size.height/2/2*letterToDist[otherRatings.survival]!!)
+                            lineTo(cX+size.width*sqrt(3f)/2f/2*letterToDist[otherRatings.farming]!!, cY+size.height/2/2*letterToDist[otherRatings.farming]!!)
+                            lineTo(cX, cY+size.height/2*letterToDist[otherRatings.pvp]!!)
+                            lineTo(cX-size.width* sqrt(3f)/2f/2*letterToDist[otherRatings.ultras]!!, cY+size.height/2/2*letterToDist[otherRatings.ultras]!!)
+                            lineTo(cX-size.width* sqrt(3f)/2f/2*letterToDist[otherRatings.support]!!, cY-size.height/2/2*letterToDist[otherRatings.support]!!)
+                            lineTo(cX, cY-size.height/2*letterToDist[otherRatings.damage]!!)
+                        }
+
+                        drawPath(path, color = Color(0xFFBB0000)) // opacity here and line below
+                        drawPath(path, color = Color(0xFFFF0000), style= Stroke(4.dp.toPx()))
+                    }
+                    // until here
+
                     val path = Path().apply {
                         moveTo(cX, cY-size.height/2* letterToDist[ratings.damage]!!)
                         lineTo(cX+size.width*sqrt(3f)/2f/2*letterToDist[ratings.survival]!!, cY-size.height/2/2*letterToDist[ratings.survival]!!)
@@ -83,6 +116,25 @@ fun ClassListItem(theClass: CombatClass, viewModel: MainViewModel){
                     }
 
                     drawPath(path, color = Color.LightGray)
+                    drawPath(path, color = Color.White, style= Stroke(4.dp.toPx()))
+
+                    // this is the thing below
+                    if (viewModel.compareClass.value != null && viewModel.compareClass.value != theClass){
+                        val otherRatings = viewModel.compareClass.value!!.ratings
+                        val path = Path().apply {
+                            moveTo(cX, cY-size.height/2* letterToDist[otherRatings.damage]!!)
+                            lineTo(cX+size.width*sqrt(3f)/2f/2*letterToDist[otherRatings.survival]!!, cY-size.height/2/2*letterToDist[otherRatings.survival]!!)
+                            lineTo(cX+size.width*sqrt(3f)/2f/2*letterToDist[otherRatings.farming]!!, cY+size.height/2/2*letterToDist[otherRatings.farming]!!)
+                            lineTo(cX, cY+size.height/2*letterToDist[otherRatings.pvp]!!)
+                            lineTo(cX-size.width* sqrt(3f)/2f/2*letterToDist[otherRatings.ultras]!!, cY+size.height/2/2*letterToDist[otherRatings.ultras]!!)
+                            lineTo(cX-size.width* sqrt(3f)/2f/2*letterToDist[otherRatings.support]!!, cY-size.height/2/2*letterToDist[otherRatings.support]!!)
+                            lineTo(cX, cY-size.height/2*letterToDist[otherRatings.damage]!!)
+                        }
+
+                        drawPath(path, color = Color(0x88BB0000))
+                        drawPath(path, color = Color(0x88FF0000), style= Stroke(4.dp.toPx()))
+                    }
+                    // until here
 
                     drawLine(color = Color.White,
                         Offset(cX, cY-size.height/2),
@@ -118,7 +170,7 @@ fun ClassListItem(theClass: CombatClass, viewModel: MainViewModel){
 
                             ),
                             pointMode = PointMode.Polygon,
-                            color = Color.White,
+                            color = Color.White.copy(alpha = 0.7f),
                             strokeWidth = 4f
 
                         )

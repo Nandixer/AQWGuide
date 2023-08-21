@@ -47,4 +47,11 @@ class MainViewModel @Inject constructor(
             }
         }.launchIn(viewModelScope)
     }
+
+    private val _compareClass = mutableStateOf<CombatClass?>(null)
+    val compareClass = _compareClass
+
+    fun chooseComparison(theClass : CombatClass){
+        _compareClass.value = theClass
+    }
 }
