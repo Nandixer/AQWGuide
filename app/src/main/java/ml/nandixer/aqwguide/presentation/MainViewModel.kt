@@ -51,7 +51,7 @@ class MainViewModel @Inject constructor(
     private val _compareClass = mutableStateOf<CombatClass?>(null)
     val compareClass = _compareClass
 
-    fun chooseComparison(theClass : CombatClass){
+    fun chooseComparison(theClass: CombatClass?){
         _compareClass.value = theClass
     }
 }

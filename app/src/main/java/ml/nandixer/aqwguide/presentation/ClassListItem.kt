@@ -59,8 +59,14 @@ fun ClassListItem(theClass: CombatClass, viewModel: MainViewModel){
                     viewModel.chooseClass(theClass.abbr)
                 },
                 onLongClick = {
-                    viewModel.chooseComparison(theClass)
-                    Toast.makeText(context, "Selected for Comparison", Toast.LENGTH_SHORT).show()
+                    if (viewModel.compareClass.value == theClass){
+                        viewModel.chooseComparison(null)
+                        Toast.makeText(context, "Deselected for Comparison", Toast.LENGTH_SHORT).show()
+                    } else {
+                        viewModel.chooseComparison(theClass)
+                        Toast.makeText(context, "Selected for Comparison", Toast.LENGTH_SHORT).show()
+                    }
+
                 }
             )
 
@@ -71,7 +77,7 @@ fun ClassListItem(theClass: CombatClass, viewModel: MainViewModel){
                 .fillMaxWidth()
                 .padding(8.dp)
         ) {
-            Text(theClass.names[0], fontSize = 24.sp)
+            Text(theClass.names[0], fontSize = 24.sp, color = if (isExpanded) Color.Blue else (if (theClass == viewModel.compareClass.value) Color.Red else Color.White) )
             if (altNames.isNotEmpty()){
                 Text(text = altNames, fontSize = 12.sp, fontStyle = FontStyle.Italic)
             }
