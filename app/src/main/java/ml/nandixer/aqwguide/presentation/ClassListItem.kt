@@ -77,7 +77,7 @@ fun ClassListItem(theClass: CombatClass, viewModel: MainViewModel){
                 .fillMaxWidth()
                 .padding(8.dp)
         ) {
-            Text(theClass.names[0], fontSize = 24.sp, color = if (isExpanded) Color.Blue else (if (theClass == viewModel.compareClass.value) Color.Red else Color.White) )
+            Text(theClass.names[0], fontSize = 24.sp, color = if (isExpanded && viewModel.compareClass.value!= null && viewModel.compareClass.value != theClass) Color.Blue else (if (theClass == viewModel.compareClass.value && !isExpanded) Color.Red else Color.White) )
             if (altNames.isNotEmpty()){
                 Text(text = altNames, fontSize = 12.sp, fontStyle = FontStyle.Italic)
             }
@@ -121,8 +121,15 @@ fun ClassListItem(theClass: CombatClass, viewModel: MainViewModel){
                         lineTo(cX, cY-size.height/2*letterToDist[ratings.damage]!!)
                     }
 
-                    drawPath(path, color = Color.LightGray)
-                    drawPath(path, color = Color.White, style= Stroke(4.dp.toPx()))
+
+                    if (viewModel.compareClass.value != null && viewModel.compareClass.value != theClass){
+                        drawPath(path, color = Color(0xFF0000BB))
+                        drawPath(path, color = Color(0xFF0000FF), style= Stroke(4.dp.toPx()))
+                    } else {
+                        drawPath(path, color = Color.LightGray)
+                        drawPath(path, color = Color.White, style= Stroke(4.dp.toPx()))
+                    }
+
 
                     // this is the thing below
                     if (viewModel.compareClass.value != null && viewModel.compareClass.value != theClass){
