@@ -26,7 +26,11 @@ class MainViewModel @Inject constructor(
     val chosenClass: State<String> = _chosenClass
 
     fun chooseClass(classAbbr: String){
-        _chosenClass.value = classAbbr
+        if (_chosenClass.value == classAbbr){
+            _chosenClass.value = ""
+        } else {
+            _chosenClass.value = classAbbr
+        }
     }
 
     val classSearchText = mutableStateOf("")
