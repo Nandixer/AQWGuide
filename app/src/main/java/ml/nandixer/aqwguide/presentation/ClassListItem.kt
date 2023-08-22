@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ElevatedCard
@@ -77,9 +78,25 @@ fun ClassListItem(theClass: CombatClass, viewModel: MainViewModel){
                 .fillMaxWidth()
                 .padding(8.dp)
         ) {
-            Text(theClass.names[0], fontSize = 24.sp, color = if (isExpanded && viewModel.compareClass.value!= null && viewModel.compareClass.value != theClass) Color.Blue else (if (theClass == viewModel.compareClass.value && !isExpanded) Color.Red else Color.White) )
+            Row(){
+                Text(theClass.names[0],
+                    fontSize = 24.sp,
+                    color = if (isExpanded && viewModel.compareClass.value!= null && viewModel.compareClass.value != theClass) Color.Blue else (if (theClass == viewModel.compareClass.value && !isExpanded) Color.Red else Color.White),
+                    modifier = Modifier.fillMaxWidth(.95f)
+                )
+                if (!isExpanded){
+                    val rats = ratings.damage+ratings.pvp+ratings.farming+ratings.support+ratings.ultras+ratings.survival
+
+                    val letter = if ("S" in rats.uppercase()) "S" else rats.toCharArray().apply { sort() }[0].toString()
+
+                    Text(letter, fontSize = 24.sp)
+                }
+            }
             if (altNames.isNotEmpty()){
                 Text(text = altNames, fontSize = 12.sp, fontStyle = FontStyle.Italic)
+            }
+            if (theClass.best?.isNotEmpty() == true){
+                Text(text = "Best ${theClass.best} class", fontSize = 12.sp)
             }
             if (isExpanded) {
                 Spacer(modifier = Modifier.height(16.dp))

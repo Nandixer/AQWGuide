@@ -6,5 +6,6 @@ data class CombatClass(
     val enhancements: List<Enhancement>,
     val names: List<String>,
     val ratings: Ratings,
-    val combo: List<String>
+    val combo: List<String>,
+    val best: String?
 )
