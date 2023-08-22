@@ -24,11 +24,13 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountBox
 import androidx.compose.material.icons.filled.AddCircle
+import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -152,7 +154,15 @@ fun BottomNavGraph(navController: NavHostController, viewModel: MainViewModel, m
                         onValueChange = {
                             text = it
                         },
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth(),
+                        singleLine = true,
+                        trailingIcon = {
+                            if (text.isNotEmpty()) {
+                                IconButton(onClick = { text = "" }) {
+                                    Icon(Icons.Filled.Clear, contentDescription = "Clear text")
+                                }
+                            }
+                        }
                     )
                 }
             ) {paddingValues ->
