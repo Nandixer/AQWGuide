@@ -10,6 +10,7 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -22,6 +23,7 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -60,12 +62,16 @@ fun ClassListItem(theClass: CombatClass, viewModel: MainViewModel){
                     viewModel.chooseClass(theClass.abbr)
                 },
                 onLongClick = {
-                    if (viewModel.compareClass.value == theClass){
+                    if (viewModel.compareClass.value == theClass) {
                         viewModel.chooseComparison(null)
-                        Toast.makeText(context, "Deselected for Comparison", Toast.LENGTH_SHORT).show()
+                        Toast
+                            .makeText(context, "Deselected for Comparison", Toast.LENGTH_SHORT)
+                            .show()
                     } else {
                         viewModel.chooseComparison(theClass)
-                        Toast.makeText(context, "Selected for Comparison", Toast.LENGTH_SHORT).show()
+                        Toast
+                            .makeText(context, "Selected for Comparison", Toast.LENGTH_SHORT)
+                            .show()
                     }
 
                 }
@@ -81,7 +87,9 @@ fun ClassListItem(theClass: CombatClass, viewModel: MainViewModel){
             Row(){
                 Text(theClass.names[0],
                     fontSize = 24.sp,
-                    color = if (isExpanded && viewModel.compareClass.value!= null && viewModel.compareClass.value != theClass) Color.Blue else (if (theClass == viewModel.compareClass.value && !isExpanded) Color.Red else Color.White),
+                    color = if (isExpanded && viewModel.compareClass.value!= null && viewModel.compareClass.value != theClass) Color.Blue
+                        else (if (theClass == viewModel.compareClass.value && !isExpanded) Color.Red
+                                else (if (isSystemInDarkTheme()) Color.White else Color.Black)),
                     modifier = Modifier.fillMaxWidth(.95f)
                 )
                 if (!isExpanded){
@@ -101,7 +109,10 @@ fun ClassListItem(theClass: CombatClass, viewModel: MainViewModel){
             if (isExpanded) {
                 Spacer(modifier = Modifier.height(16.dp))
 
-                Canvas(modifier = Modifier.fillMaxWidth(.7f).aspectRatio(1f).align(Alignment.CenterHorizontally)){
+                Canvas(modifier = Modifier
+                    .fillMaxWidth(.7f)
+                    .aspectRatio(1f)
+                    .align(Alignment.CenterHorizontally)){
 
                     val letterToDist = mapOf("S" to 6f/6, "A" to 5f/6, "B" to 4f/6, "C" to 3f/6, "D" to 2f/6, "E" to 1f/6, "F" to 0f/6).withDefault { 0f/6 }
 
@@ -228,20 +239,20 @@ fun ClassListItem(theClass: CombatClass, viewModel: MainViewModel){
                     Spacer(modifier = Modifier.height(16.dp))
 
                     Column(
-                        modifier = Modifier.background(color = Color(0xFFDDDDDD))
+                        modifier = Modifier.background(color = if(isSystemInDarkTheme()) Color.Black else Color.White)
                     ) {
                         // damage tests
                         if (dps.classhall != null) {
                             Row {
-                                Text(text = "Classhall DPS:", color = Color.Black)
+                                Text(text = "Classhall DPS:")
                                 Spacer(modifier = Modifier.weight(1.0f))
-                                Text(dps.classhall.toString(), color = Color.Black)
+                                Text(dps.classhall.toString())
                             }
                         }
 
                         if (dps.classhallNsod != null) {
                             Row {
-                                Text(text = "Classhall DPS +51%:", color = Color.Black)
+                                Text(text = "Classhall DPS +51%:")
                                 Spacer(modifier = Modifier.weight(1.0f))
                                 if (dps.classhall != null) {
                                     val percent =
@@ -249,7 +260,7 @@ fun ClassListItem(theClass: CombatClass, viewModel: MainViewModel){
                                     val growth = (percent * 100 - 100).toInt()
                                     Text(text = "+$growth% ", color = Color.Green)
                                 }
-                                Text(dps.classhallNsod.toString(), color = Color.Black)
+                                Text(dps.classhallNsod.toString())
                             }
                         }
 
@@ -257,15 +268,15 @@ fun ClassListItem(theClass: CombatClass, viewModel: MainViewModel){
 
                         if (dps.revenant != null) {
                             Row {
-                                Text(text = "Revenant KPM:", color = Color.Black)
+                                Text(text = "Revenant KPM:")
                                 Spacer(modifier = Modifier.weight(1.0f))
-                                Text(dps.revenant.toString(), color = Color.Black)
+                                Text(dps.revenant.toString())
                             }
                         }
 
                         if (dps.revenantNsod != null) {
                             Row {
-                                Text(text = "Revenant KPM +51%:", color = Color.Black)
+                                Text(text = "Revenant KPM +51%:")
                                 Spacer(modifier = Modifier.weight(1.0f))
                                 if (dps.revenant != null) {
                                     val percent =
@@ -273,7 +284,7 @@ fun ClassListItem(theClass: CombatClass, viewModel: MainViewModel){
                                     val growth = (percent * 100 - 100).toInt()
                                     Text(text = "+$growth% ", color = Color.Green)
                                 }
-                                Text(dps.revenantNsod.toString(), color = Color.Black)
+                                Text(dps.revenantNsod.toString())
                             }
                         }
                     }
