@@ -26,7 +26,10 @@ import androidx.compose.material.icons.filled.AccountBox
 import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Face
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -40,6 +43,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -148,6 +152,9 @@ fun BottomNavGraph(navController: NavHostController, viewModel: MainViewModel, m
             Scaffold(
                 topBar = {
                     var text by rememberSaveable{viewModel.classSearchText}
+                    var isDropdownVisible by rememberSaveable{
+                        mutableStateOf(false)
+                    }
                     TextField(
                         value = text,
                         placeholder = {Text("Search class name, abbreviation, or tags...")},
@@ -161,9 +168,24 @@ fun BottomNavGraph(navController: NavHostController, viewModel: MainViewModel, m
                                 IconButton(onClick = { text = "" }) {
                                     Icon(Icons.Filled.Clear, contentDescription = "Clear text")
                                 }
+                            } else {
+                                IconButton(onClick = {
+                                    isDropdownVisible = true
+                                }) {
+                                    Icon(Icons.Filled.Menu, contentDescription = "Open Search Menu")
+                                }
                             }
                         }
                     )
+                    DropdownMenu(expanded = isDropdownVisible, onDismissRequest = { isDropdownVisible = false }) {
+                        for (theTag in viewModel.classes.value.map { it -> it.tags }.flatten().distinct()) {
+                            DropdownMenuItem(text = { Text(theTag) }, onClick = {
+                                    text = theTag
+                                    isDropdownVisible = false
+                                }
+                            )
+                        }
+                    }
                 }
             ) {paddingValues ->
                 ClassesScreen(viewModel = viewModel, modifier = Modifier.padding(top = paddingValues.calculateTopPadding()))
