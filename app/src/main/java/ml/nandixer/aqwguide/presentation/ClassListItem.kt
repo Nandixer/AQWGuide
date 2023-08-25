@@ -287,6 +287,30 @@ fun ClassListItem(theClass: CombatClass, viewModel: MainViewModel){
                                 Text(dps.revenantNsod.toString())
                             }
                         }
+
+                        Spacer(modifier = Modifier.height(8.dp))
+
+                        if (dps.icestorm != null) {
+                            Row {
+                                Text(text = "Icestorm KPM:")
+                                Spacer(modifier = Modifier.weight(1.0f))
+                                Text(dps.icestorm.toString())
+                            }
+                        }
+
+                        if (dps.icestormNsod != null) {
+                            Row {
+                                Text(text = "Icestorm KPM +51%:")
+                                Spacer(modifier = Modifier.weight(1.0f))
+                                if (dps.icestorm != null) {
+                                    val percent =
+                                        dps.icestormNsod!!.toFloat() / dps.icestorm!!.toFloat()
+                                    val growth = (percent * 100 - 100).toInt()
+                                    Text(text = "+$growth% ", color = Color.Green)
+                                }
+                                Text(dps.icestormNsod.toString())
+                            }
+                        }
                     }
 
                     if (enh != theClass.enhancements.last()) {
