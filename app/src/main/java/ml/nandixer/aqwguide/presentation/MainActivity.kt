@@ -28,6 +28,8 @@ import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ElevatedCard
@@ -44,6 +46,7 @@ import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -100,13 +103,14 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             AQWGuideTheme {
+                val viewModel: MainViewModel = hiltViewModel()
 
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    val viewModel: MainViewModel = hiltViewModel()
+
                     val navController = rememberNavController()
                     val navBackStackEntry by navController.currentBackStackEntryAsState()
                     val currentDestination = navBackStackEntry?.destination
@@ -138,7 +142,11 @@ class MainActivity : ComponentActivity() {
                         BottomNavGraph(navController = navController, viewModel = viewModel, modifier = Modifier.padding(bottom = paddingValues.calculateBottomPadding()))
 
                     }
+
+
                 }
+
+                SimplePopupNotification(viewModel)
             }
         }
     }
@@ -200,3 +208,33 @@ fun BottomNavGraph(navController: NavHostController, viewModel: MainViewModel, m
         }
     }
 }
+
+@Composable
+fun SimplePopupNotification(viewModel: MainViewModel) {
+    val THIS_VERSION = 1001
+    val openDialog = remember { mutableStateOf(true) }
+    val newestVersion = viewModel.newestVersion
+
+    if (openDialog.value && newestVersion.value != null && newestVersion.value!!.number != THIS_VERSION) {
+        val major:Int = newestVersion.value!!.number/1000
+        val minor:Int = newestVersion.value!!.number%1000
+        AlertDialog(
+            onDismissRequest = { openDialog.value = false },
+            title = {
+                if (!newestVersion.value!!.breaking)
+                    Text(text = "Version ${major}.${minor} Available")
+                else
+                    Text(text = "Version ${major}.${minor} Recommended")
+            },
+            text = { Text(newestVersion.value!!.changelog) },
+            confirmButton = {
+                Button(
+                    onClick = { openDialog.value = false },
+                ) {
+                    Text("OK")
+                }
+            }
+        )
+    }
+}
+
