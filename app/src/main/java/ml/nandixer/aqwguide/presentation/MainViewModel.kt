@@ -76,7 +76,6 @@ class MainViewModel @Inject constructor(
                 "PvP rating" -> ratingToNumber(it.ratings.pvp)
                 "ultras rating" -> ratingToNumber(it.ratings.ultras)
                 "classhall DPS" -> it.enhancements[0].dps.classhall
-                "classhall DPS" -> it.enhancements[0].dps.classhall
                 "classhall DPS+" -> it.enhancements[0].dps.classhallNsod
                 "revenant KPM" -> it.enhancements[0].dps.revenant
                 "revenant KPM+" -> it.enhancements[0].dps.revenantNsod
@@ -88,6 +87,7 @@ class MainViewModel @Inject constructor(
         }
 
     }
+
 
     private fun ratingToNumber(rating:String): Int {
         return when(rating.lowercase()){
@@ -104,6 +104,62 @@ class MainViewModel @Inject constructor(
     }
 
     private val _sortType = mutableStateOf("name")
+
+    val sortValueLength = derivedStateOf {
+        when(_sortType.value){
+            "name" -> 1
+            "overall rating" -> 1
+            "damage rating" -> 1
+            "survival rating" -> 1
+            "support rating" -> 1
+            "farming rating" -> 1
+            "PvP rating" -> 1
+            "ultras rating" -> 1
+            "classhall DPS" -> 3
+            "classhall DPS+" -> 3
+            "revenant KPM" -> 3
+            "revenant KPM+" -> 3
+            "icestormunder KPM" -> 3
+            "icestormunder KPM+" -> 3
+            else -> 1
+        }
+    }
+
+    fun getClassSortLabel(theClass: CombatClass):String{
+        with(theClass.ratings){
+            val rats = (damage+pvp+farming+support+ultras+survival).uppercase()
+            return when(_sortType.value){
+                "name" -> ( if ("S" in rats) "S" else rats.toCharArray().apply { sort() }[0].toString())
+                "overall rating" -> ( if ("S" in rats) "S" else rats.toCharArray().apply { sort() }[0].toString())
+                "damage rating" -> damage
+                "survival rating" -> survival
+                "support rating" -> support
+                "farming rating" -> farming
+                "PvP rating" -> pvp
+                "ultras rating" -> ultras
+                "classhall DPS" -> dpsToString(theClass.enhancements[0].dps.classhall)
+                "classhall DPS+" -> dpsToString(theClass.enhancements[0].dps.classhallNsod)
+                "revenant KPM" -> kpmToString(theClass.enhancements[0].dps.revenant)
+                "revenant KPM+" -> kpmToString(theClass.enhancements[0].dps.revenantNsod)
+                "icestormunder KPM" -> kpmToString(theClass.enhancements[0].dps.icestorm)
+                "icestormunder KPM+" -> kpmToString(theClass.enhancements[0].dps.icestormNsod)
+                else -> if ("S" in rats) "S" else rats.toCharArray().apply { sort() }[0].toString()
+            }
+        }
+
+    }
+
+    private fun dpsToString(dps: Int?):String{
+        if (dps == null)
+            return "  ?"
+        return (dps/1000).toString().padStart(2)+"k"
+
+    }
+    private fun kpmToString(kpm: Int?):String{
+        if (kpm == null)
+            return " ?"
+        return kpm.toString().padStart(3)
+    }
 
     fun setSortType(sortType: String){
         _sortType.value = sortType

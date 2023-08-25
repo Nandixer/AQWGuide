@@ -85,19 +85,23 @@ fun ClassListItem(theClass: CombatClass, viewModel: MainViewModel){
                 .padding(8.dp)
         ) {
             Row(){
+
+                val labelFontSize = if (viewModel.sortValueLength.value == 1) 24.sp else 18.sp
+                val labelRemainingSpace = if (viewModel.sortValueLength.value == 1) .95f else .90f
+
                 Text(theClass.names[0],
                     fontSize = 24.sp,
                     color = if (isExpanded && viewModel.compareClass.value!= null && viewModel.compareClass.value != theClass) Color.Blue
                         else (if (theClass == viewModel.compareClass.value && !isExpanded) Color.Red
                                 else (if (isSystemInDarkTheme()) Color.White else Color.Black)),
-                    modifier = Modifier.fillMaxWidth(.95f)
+                    modifier = Modifier.fillMaxWidth(labelRemainingSpace)
                 )
                 if (!isExpanded){
                     val rats = ratings.damage+ratings.pvp+ratings.farming+ratings.support+ratings.ultras+ratings.survival
 
-                    val letter = if ("S" in rats.uppercase()) "S" else rats.toCharArray().apply { sort() }[0].toString()
+                    val letter = viewModel.getClassSortLabel(theClass)
 
-                    Text(letter, fontSize = 24.sp)
+                    Text(letter, fontSize = labelFontSize)
                 }
             }
             if (altNames.isNotEmpty()){
