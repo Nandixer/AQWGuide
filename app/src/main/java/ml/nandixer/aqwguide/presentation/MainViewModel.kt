@@ -64,10 +64,11 @@ class MainViewModel @Inject constructor(
             filterStr in combatClass.abbr.lowercase() ||
             filterStr in combatClass.tags.joinToString(" ").lowercase()
         }.sortedByDescending {
+            val rats = it.ratings.damage+it.ratings.pvp+it.ratings.farming+it.ratings.support+it.ratings.ultras+it.ratings.survival.uppercase()
             when (_sortType.value){
-                // missing: overall rating
                 // todo: don't assume enhancements [0]
                 "name" -> 0// unsorted, keep default order
+                "overall rating" -> ratingToNumber( if ("S" in rats) "S" else rats.toCharArray().apply { sort() }[0].toString())
                 "damage rating" -> ratingToNumber(it.ratings.damage)
                 "survival rating" -> ratingToNumber(it.ratings.survival)
                 "support rating" -> ratingToNumber(it.ratings.support)
