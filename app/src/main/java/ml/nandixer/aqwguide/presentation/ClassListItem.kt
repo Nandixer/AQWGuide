@@ -264,7 +264,9 @@ fun ClassListItem(theClass: CombatClass, viewModel: MainViewModel){
                             }
                         }
 
-                        Spacer(modifier = Modifier.height(8.dp))
+                        if ((dps.classhall != null || dps.classhallNsod != null) && (dps.revenant != null || dps.revenantNsod != null)){
+                            Spacer(modifier = Modifier.height(8.dp))
+                        }
 
                         if (dps.revenant != null) {
                             Row {
@@ -288,7 +290,9 @@ fun ClassListItem(theClass: CombatClass, viewModel: MainViewModel){
                             }
                         }
 
-                        Spacer(modifier = Modifier.height(8.dp))
+                        if ((dps.revenant != null || dps.revenantNsod != null) && (dps.icestorm != null || dps.icestormNsod != null)){
+                            Spacer(modifier = Modifier.height(8.dp))
+                        }
 
                         if (dps.icestorm != null) {
                             Row {
