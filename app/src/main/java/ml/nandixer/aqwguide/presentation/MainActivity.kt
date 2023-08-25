@@ -157,22 +157,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun BottomNavGraph(navController: NavHostController, viewModel: MainViewModel, modifier: Modifier){
 
-    val sortTypes = listOf<String>(
-        "name",
-        "overall rating",
-        "damage rating",
-        "survival rating",
-        "support rating",
-        "farming rating",
-        "PvP rating",
-        "ultras rating",
-        "classhall DPS",
-        "classhall DPS+",
-        "revenant KPM",
-        "revenant KPM+",
-        "icestormunder KPM",
-        "icestormunder KPM+"
-    )
+    val sortTypes = viewModel.sortTypes
 
     NavHost(navController = navController, startDestination = BottomBarScreen.Classes.route, modifier){
         composable(route = BottomBarScreen.Classes.route){
@@ -226,6 +211,7 @@ fun BottomNavGraph(navController: NavHostController, viewModel: MainViewModel, m
                     DropdownMenu(expanded = isSortDropdownVisible, onDismissRequest = { isSortDropdownVisible = false }) {
                         for (sortMethod in sortTypes){
                             DropdownMenuItem(text = { Text("Sort by "+sortMethod) }, onClick = {
+                                viewModel.setSortType(sortMethod)
                                 isSortDropdownVisible = false
                             }
                             )

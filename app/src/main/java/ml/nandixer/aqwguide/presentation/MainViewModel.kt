@@ -38,13 +38,74 @@ class MainViewModel @Inject constructor(
 
     val classSearchText = mutableStateOf("")
 
+    val sortTypes = listOf<String>(
+        "name",
+        "overall rating",
+        "damage rating",
+        "survival rating",
+        "support rating",
+        "farming rating",
+        "PvP rating",
+        "ultras rating",
+        "group DPS",
+        "group DPS+",
+        "classhall DPS",
+        "classhall DPS+",
+        "revenant KPM",
+        "revenant KPM+",
+        "icestormunder KPM",
+        "icestormunder KPM+"
+    )
+
     val filteredClasses = derivedStateOf {
         classes.value.filter { combatClass ->
             val filterStr = classSearchText.value.lowercase()
             filterStr in combatClass.names.joinToString(" ").lowercase() ||
             filterStr in combatClass.abbr.lowercase() ||
             filterStr in combatClass.tags.joinToString(" ").lowercase()
+        }.sortedByDescending {
+            when (_sortType.value){
+                // missing: overall rating
+                // todo: don't assume enhancements [0]
+                "name" -> 0// unsorted, keep default order
+                "damage rating" -> ratingToNumber(it.ratings.damage)
+                "survival rating" -> ratingToNumber(it.ratings.survival)
+                "support rating" -> ratingToNumber(it.ratings.support)
+                "farming rating" -> ratingToNumber(it.ratings.farming)
+                "PvP rating" -> ratingToNumber(it.ratings.pvp)
+                "ultras rating" -> ratingToNumber(it.ratings.ultras)
+                "classhall DPS" -> it.enhancements[0].dps.classhall
+                "classhall DPS" -> it.enhancements[0].dps.classhall
+                "classhall DPS+" -> it.enhancements[0].dps.classhallNsod
+                "revenant KPM" -> it.enhancements[0].dps.revenant
+                "revenant KPM+" -> it.enhancements[0].dps.revenantNsod
+                "icestormunder KPM" -> it.enhancements[0].dps.icestorm
+                "icestormunder KPM+" -> it.enhancements[0].dps.icestormNsod
+                else -> it.enhancements.size// unsorted, keep default order
+            }
+
         }
+
+    }
+
+    private fun ratingToNumber(rating:String): Int {
+        return when(rating.lowercase()){
+            "f" -> 0
+            "e" -> 1
+            "d" -> 2
+            "c" -> 3
+            "b" -> 4
+            "a" -> 5
+            "s" -> 6
+            else -> -1
+        }
+
+    }
+
+    private val _sortType = mutableStateOf("name")
+
+    fun setSortType(sortType: String){
+        _sortType.value = sortType
     }
 
     init {
