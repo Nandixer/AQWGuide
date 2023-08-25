@@ -24,6 +24,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountBox
 import androidx.compose.material.icons.filled.AddCircle
+import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.Menu
@@ -163,9 +164,13 @@ fun BottomNavGraph(navController: NavHostController, viewModel: MainViewModel, m
                     var isDropdownVisible by rememberSaveable{
                         mutableStateOf(false)
                     }
+
+                    var isSortDropdownVisible by rememberSaveable{
+                        mutableStateOf(false)
+                    }
                     TextField(
                         value = text,
-                        placeholder = {Text("Search class name, abbreviation, or tags...")},
+                        placeholder = {Text("Search by name, abbreviation, or tags")},
                         onValueChange = {
                             text = it
                         },
@@ -183,6 +188,11 @@ fun BottomNavGraph(navController: NavHostController, viewModel: MainViewModel, m
                                     Icon(Icons.Filled.Menu, contentDescription = "Open Search Menu")
                                 }
                             }
+                        },
+                        leadingIcon = {
+                            IconButton(onClick = { isSortDropdownVisible = true }) {
+                                Icon(Icons.Filled.ArrowDropDown, contentDescription = "Sort classes by")
+                            }
                         }
                     )
                     DropdownMenu(expanded = isDropdownVisible, onDismissRequest = { isDropdownVisible = false }) {
@@ -193,6 +203,13 @@ fun BottomNavGraph(navController: NavHostController, viewModel: MainViewModel, m
                                 }
                             )
                         }
+                    }
+
+                    DropdownMenu(expanded = isSortDropdownVisible, onDismissRequest = { isSortDropdownVisible = false }) {
+                        DropdownMenuItem(text = { Text("Sort alphabetically") }, onClick = {
+                            isSortDropdownVisible = false
+                        }
+                        )
                     }
                 }
             ) {paddingValues ->
