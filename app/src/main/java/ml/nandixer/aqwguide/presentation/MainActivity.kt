@@ -156,6 +156,24 @@ class MainActivity : ComponentActivity() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BottomNavGraph(navController: NavHostController, viewModel: MainViewModel, modifier: Modifier){
+
+    val sortTypes = listOf<String>(
+        "name",
+        "overall rating",
+        "damage rating",
+        "survival rating",
+        "support rating",
+        "farming rating",
+        "PvP rating",
+        "ultras rating",
+        "classhall DPS",
+        "classhall DPS+",
+        "revenant KPM",
+        "revenant KPM+",
+        "icestormunder KPM",
+        "icestormunder KPM+"
+    )
+
     NavHost(navController = navController, startDestination = BottomBarScreen.Classes.route, modifier){
         composable(route = BottomBarScreen.Classes.route){
             Scaffold(
@@ -206,10 +224,13 @@ fun BottomNavGraph(navController: NavHostController, viewModel: MainViewModel, m
                     }
 
                     DropdownMenu(expanded = isSortDropdownVisible, onDismissRequest = { isSortDropdownVisible = false }) {
-                        DropdownMenuItem(text = { Text("Sort alphabetically") }, onClick = {
-                            isSortDropdownVisible = false
+                        for (sortMethod in sortTypes){
+                            DropdownMenuItem(text = { Text("Sort by "+sortMethod) }, onClick = {
+                                isSortDropdownVisible = false
+                            }
+                            )
                         }
-                        )
+
                     }
                 }
             ) {paddingValues ->
