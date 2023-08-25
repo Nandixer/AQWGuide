@@ -55,16 +55,8 @@ class MainViewModel @Inject constructor(
         }.launchIn(viewModelScope)
 
         getVersionsUseCase().onEach { result ->
-            Log.d("nandorsss", "b'")
             if (result is Resource.Success && result.data != null){
                 _newestVersion.value = result.data[0]
-                Log.d("nandorsss", "a'")
-            }
-            if ( result is Resource.Error){
-                Log.d("nandorsss", "e'")
-            }
-            if ( result is Resource.Loading){
-                Log.d("nandorsss", "l'")
             }
         }.launchIn(viewModelScope)
     }
