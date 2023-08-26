@@ -246,7 +246,7 @@ fun ClassListItem(theClass: CombatClass, viewModel: MainViewModel){
                         modifier = Modifier.background(color = if(isSystemInDarkTheme()) Color.Black else Color.White)
                     ) {
                         // damage tests
-                        val otherDPS = if (viewModel.compareClass.value != null && viewModel.compareClass.value != theClass) viewModel.compareClass.value!!.enhancements[0].dps else Dps(null, null, null, null, null, null)
+                        val otherDPS = if (viewModel.compareClass.value != null && viewModel.compareClass.value != theClass) viewModel.compareClass.value!!.maxPerformance() else Dps(null, null, null, null, null, null)
 
                         Measurement("Classhall DPS", dps.classhall , dps.classhallNsod, otherDPS.classhall, otherDPS.classhallNsod)
 

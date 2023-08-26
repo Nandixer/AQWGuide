@@ -8,4 +8,18 @@ data class CombatClass(
     val ratings: Ratings,
     val combo: List<String>,
     val best: String?
-)
+){
+    fun maxPerformance(): Dps {
+
+        return Dps(
+
+            classhall = enhancements.mapNotNull { it.dps.classhall }.maxOrNull(),
+            classhallNsod = enhancements.mapNotNull { it.dps.classhallNsod }.maxOrNull(),
+            revenant = enhancements.mapNotNull { it.dps.revenant }.maxOrNull(),
+            revenantNsod = enhancements.mapNotNull { it.dps.revenantNsod }.maxOrNull(),
+            icestorm = enhancements.mapNotNull { it.dps.icestorm }.maxOrNull(),
+            icestormNsod = enhancements.mapNotNull { it.dps.icestormNsod }.maxOrNull(),
+
+            )
+    }
+}

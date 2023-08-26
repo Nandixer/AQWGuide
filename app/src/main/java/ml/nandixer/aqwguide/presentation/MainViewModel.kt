@@ -75,12 +75,12 @@ class MainViewModel @Inject constructor(
                 "farming rating" -> ratingToNumber(it.ratings.farming)
                 "PvP rating" -> ratingToNumber(it.ratings.pvp)
                 "ultras rating" -> ratingToNumber(it.ratings.ultras)
-                "classhall DPS" -> it.enhancements[0].dps.classhall
-                "classhall DPS+" -> it.enhancements[0].dps.classhallNsod
-                "revenant KPM" -> it.enhancements[0].dps.revenant
-                "revenant KPM+" -> it.enhancements[0].dps.revenantNsod
-                "icestormunder KPM" -> it.enhancements[0].dps.icestorm
-                "icestormunder KPM+" -> it.enhancements[0].dps.icestormNsod
+                "classhall DPS" -> it.maxPerformance().classhall
+                "classhall DPS+" -> it.maxPerformance().classhallNsod
+                "revenant KPM" -> it.maxPerformance().revenant
+                "revenant KPM+" -> it.maxPerformance().revenantNsod
+                "icestormunder KPM" -> it.maxPerformance().icestorm
+                "icestormunder KPM+" -> it.maxPerformance().icestormNsod
                 else -> it.enhancements.size// unsorted, keep default order
             }
 
@@ -137,12 +137,12 @@ class MainViewModel @Inject constructor(
                 "farming rating" -> farming
                 "PvP rating" -> pvp
                 "ultras rating" -> ultras
-                "classhall DPS" -> dpsToString(theClass.enhancements[0].dps.classhall)
-                "classhall DPS+" -> dpsToString(theClass.enhancements[0].dps.classhallNsod)
-                "revenant KPM" -> kpmToString(theClass.enhancements[0].dps.revenant)
-                "revenant KPM+" -> kpmToString(theClass.enhancements[0].dps.revenantNsod)
-                "icestormunder KPM" -> kpmToString(theClass.enhancements[0].dps.icestorm)
-                "icestormunder KPM+" -> kpmToString(theClass.enhancements[0].dps.icestormNsod)
+                "classhall DPS" -> dpsToString(theClass.maxPerformance().classhall)
+                "classhall DPS+" -> dpsToString(theClass.maxPerformance().classhallNsod)
+                "revenant KPM" -> kpmToString(theClass.maxPerformance().revenant)
+                "revenant KPM+" -> kpmToString(theClass.maxPerformance().revenantNsod)
+                "icestormunder KPM" -> kpmToString(theClass.maxPerformance().icestorm)
+                "icestormunder KPM+" -> kpmToString(theClass.maxPerformance().icestormNsod)
                 else -> if ("S" in rats) "S" else rats.toCharArray().apply { sort() }[0].toString()
             }
         }
