@@ -246,7 +246,7 @@ fun ClassListItem(theClass: CombatClass, viewModel: MainViewModel){
                         modifier = Modifier.background(color = if(isSystemInDarkTheme()) Color.Black else Color.White)
                     ) {
                         // damage tests
-                        val otherDPS = if (viewModel.compareClass.value != null) viewModel.compareClass.value!!.enhancements[0].dps else Dps(null, null, null, null, null, null)
+                        val otherDPS = if (viewModel.compareClass.value != null && viewModel.compareClass.value != theClass) viewModel.compareClass.value!!.enhancements[0].dps else Dps(null, null, null, null, null, null)
 
                         Measurement("Classhall DPS", dps.classhall , dps.classhallNsod, otherDPS.classhall, otherDPS.classhallNsod)
 
@@ -313,11 +313,14 @@ fun Enhancements(text: String){
 
 @Composable
 fun Measurement(label: String, base: Int?, nsod: Int?, compBase: Int?, compNsod: Int?){
+
+    val blue = Color(0xFF2266FF) // a bit brighter for contrast
+
     if (base != null) {
         Row {
-            Text(text = "${label}:", color = if (compBase != null) Color.Blue else textColor())
+            Text(text = "${label}:", color = if (compBase != null) blue else textColor())
             Spacer(modifier = Modifier.weight(1.0f))
-            Text(base.toString(), color = if (compBase != null) Color.Blue else textColor())
+            Text(base.toString(), color = if (compBase != null) blue else textColor())
         }
     }
 
@@ -331,7 +334,7 @@ fun Measurement(label: String, base: Int?, nsod: Int?, compBase: Int?, compNsod:
 
     if (nsod != null) {
         Row {
-            Text(text = "$label +51%:", color = if (compNsod != null) Color.Blue else textColor())
+            Text(text = "$label +51%:", color = if (compNsod != null) blue else textColor())
             Spacer(modifier = Modifier.weight(1.0f))
             if (base != null) {
                 val percent =
@@ -339,7 +342,7 @@ fun Measurement(label: String, base: Int?, nsod: Int?, compBase: Int?, compNsod:
                 val growth = (percent * 100 - 100).toInt()
                 Text(text = "+$growth% ", color = Color.Green)
             }
-            Text(nsod.toString(), color = if (compNsod != null) Color.Blue else textColor())
+            Text(nsod.toString(), color = if (compNsod != null) blue else textColor())
         }
     }
 
