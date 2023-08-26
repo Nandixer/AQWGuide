@@ -1,8 +1,10 @@
 package ml.nandixer.aqwguide.presentation
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
 import android.widget.EditText
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.animateContentSize
@@ -54,6 +56,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.tooling.preview.Preview
@@ -237,20 +240,28 @@ fun BottomNavGraph(navController: NavHostController, viewModel: MainViewModel, m
 fun SimplePopupNotification(viewModel: MainViewModel) {
     val THIS_VERSION = 1001
     val openDialog = remember { mutableStateOf(true) }
-    val newestVersion = viewModel.newestVersion
 
-    if (openDialog.value && newestVersion.value != null && newestVersion.value!!.number != THIS_VERSION) {
-        val major:Int = newestVersion.value!!.number/1000
-        val minor:Int = newestVersion.value!!.number%1000
+    val newVersions = viewModel.newestVersion.value.filter { it.number > THIS_VERSION }
+
+    val newestVersion = if (newVersions.isNotEmpty()) newVersions[0] else null
+    val breaking = newVersions.any { it.breaking }
+
+
+
+    if (newestVersion == null)
+        return
+
+    val major:Int = newestVersion.number/1000
+    val minor:Int = newestVersion.number%1000
+
+    if (openDialog.value && breaking) {
+
         AlertDialog(
             onDismissRequest = { openDialog.value = false },
             title = {
-                if (!newestVersion.value!!.breaking)
-                    Text(text = "Version ${major}.${minor} Available")
-                else
-                    Text(text = "Version ${major}.${minor} Recommended")
+                Text(text = "Version ${major}.${minor} Recommended")
             },
-            text = { Text(newestVersion.value!!.changelog) },
+            text = { Text(newestVersion.changelog) },
             confirmButton = {
                 Button(
                     onClick = { openDialog.value = false },
@@ -260,5 +271,11 @@ fun SimplePopupNotification(viewModel: MainViewModel) {
             }
         )
     }
+
+    if (openDialog.value && !breaking){
+        Toast.makeText(LocalContext.current, "Version ${major}.${minor} Available.", Toast.LENGTH_SHORT).show()
+        openDialog.value = false
+    }
+
 }
 

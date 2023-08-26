@@ -174,12 +174,12 @@ class MainViewModel @Inject constructor(
 
         getVersionsUseCase().onEach { result ->
             if (result is Resource.Success && result.data != null){
-                _newestVersion.value = result.data[0]
+                _newestVersion.value = result.data
             }
         }.launchIn(viewModelScope)
     }
 
-    private val _newestVersion = mutableStateOf<AppVersion?>(null)
+    private val _newestVersion = mutableStateOf<List<AppVersion>>(listOf())
     val newestVersion = _newestVersion
 
     private val _compareClass = mutableStateOf<CombatClass?>(null)

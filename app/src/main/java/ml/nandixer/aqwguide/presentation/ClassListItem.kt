@@ -97,7 +97,6 @@ fun ClassListItem(theClass: CombatClass, viewModel: MainViewModel){
                     modifier = Modifier.fillMaxWidth(labelRemainingSpace)
                 )
                 if (!isExpanded){
-                    val rats = ratings.damage+ratings.pvp+ratings.farming+ratings.support+ratings.ultras+ratings.survival
 
                     val letter = viewModel.getClassSortLabel(theClass)
 
