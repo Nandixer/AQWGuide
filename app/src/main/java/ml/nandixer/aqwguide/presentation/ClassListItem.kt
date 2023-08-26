@@ -245,79 +245,21 @@ fun ClassListItem(theClass: CombatClass, viewModel: MainViewModel){
                         modifier = Modifier.background(color = if(isSystemInDarkTheme()) Color.Black else Color.White)
                     ) {
                         // damage tests
-                        if (dps.classhall != null) {
-                            Row {
-                                Text(text = "Classhall DPS:")
-                                Spacer(modifier = Modifier.weight(1.0f))
-                                Text(dps.classhall.toString())
-                            }
-                        }
 
-                        if (dps.classhallNsod != null) {
-                            Row {
-                                Text(text = "Classhall DPS +51%:")
-                                Spacer(modifier = Modifier.weight(1.0f))
-                                if (dps.classhall != null) {
-                                    val percent =
-                                        dps.classhallNsod!!.toFloat() / dps.classhall!!.toFloat()
-                                    val growth = (percent * 100 - 100).toInt()
-                                    Text(text = "+$growth% ", color = Color.Green)
-                                }
-                                Text(dps.classhallNsod.toString())
-                            }
-                        }
+                        Measurement("Classhall DPS", dps.classhall , dps.classhallNsod)
 
                         if ((dps.classhall != null || dps.classhallNsod != null) && (dps.revenant != null || dps.revenantNsod != null)){
                             Spacer(modifier = Modifier.height(8.dp))
                         }
 
-                        if (dps.revenant != null) {
-                            Row {
-                                Text(text = "Revenant KPM:")
-                                Spacer(modifier = Modifier.weight(1.0f))
-                                Text(dps.revenant.toString())
-                            }
-                        }
-
-                        if (dps.revenantNsod != null) {
-                            Row {
-                                Text(text = "Revenant KPM +51%:")
-                                Spacer(modifier = Modifier.weight(1.0f))
-                                if (dps.revenant != null) {
-                                    val percent =
-                                        dps.revenantNsod!!.toFloat() / dps.revenant!!.toFloat()
-                                    val growth = (percent * 100 - 100).toInt()
-                                    Text(text = "+$growth% ", color = Color.Green)
-                                }
-                                Text(dps.revenantNsod.toString())
-                            }
-                        }
+                        Measurement("Revenant KPM", dps.revenant, dps.revenantNsod)
 
                         if ((dps.revenant != null || dps.revenantNsod != null) && (dps.icestorm != null || dps.icestormNsod != null)){
                             Spacer(modifier = Modifier.height(8.dp))
                         }
 
-                        if (dps.icestorm != null) {
-                            Row {
-                                Text(text = "Icestorm KPM:")
-                                Spacer(modifier = Modifier.weight(1.0f))
-                                Text(dps.icestorm.toString())
-                            }
-                        }
+                        Measurement("Icestormarena KPM", dps.icestorm, dps.icestormNsod)
 
-                        if (dps.icestormNsod != null) {
-                            Row {
-                                Text(text = "Icestorm KPM +51%:")
-                                Spacer(modifier = Modifier.weight(1.0f))
-                                if (dps.icestorm != null) {
-                                    val percent =
-                                        dps.icestormNsod!!.toFloat() / dps.icestorm!!.toFloat()
-                                    val growth = (percent * 100 - 100).toInt()
-                                    Text(text = "+$growth% ", color = Color.Green)
-                                }
-                                Text(dps.icestormNsod.toString())
-                            }
-                        }
                     }
 
                     if (enh != theClass.enhancements.last()) {
@@ -365,4 +307,30 @@ fun Enhancements(text: String){
             .wrapContentHeight(align = Alignment.CenterVertically)
 
     )
+}
+
+@Composable
+fun Measurement(label: String, base: Int?, nsod: Int?){
+    if (base != null) {
+        Row {
+            Text(text = "${label}:")
+            Spacer(modifier = Modifier.weight(1.0f))
+            Text(base.toString())
+        }
+    }
+
+    if (nsod != null) {
+        Row {
+            Text(text = "$label +51%:")
+            Spacer(modifier = Modifier.weight(1.0f))
+            if (base != null) {
+                val percent =
+                    nsod.toFloat() / base.toFloat()
+                val growth = (percent * 100 - 100).toInt()
+                Text(text = "+$growth% ", color = Color.Green)
+            }
+            Text(nsod.toString())
+        }
+    }
+
 }
