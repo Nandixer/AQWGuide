@@ -59,10 +59,20 @@ class MainViewModel @Inject constructor(
 
     val filteredClasses = derivedStateOf {
         classes.value.filter { combatClass ->
-            val filterStr = classSearchText.value.lowercase()
-            filterStr in combatClass.names.joinToString(" ").lowercase() ||
+
+            var filterStr = classSearchText.value.lowercase()
+
+            val negative:Boolean = filterStr.startsWith('-')
+
+            if (negative){
+                filterStr = filterStr.substring(1)
+            }
+
+            val matched = filterStr in combatClass.names.joinToString(" ").lowercase() ||
             filterStr in combatClass.abbr.lowercase() ||
             filterStr in combatClass.tags.joinToString(" ").lowercase()
+
+            matched != negative
         }.sortedByDescending {
             val rats = it.ratings.damage+it.ratings.pvp+it.ratings.farming+it.ratings.support+it.ratings.ultras+it.ratings.survival.uppercase()
             when (_sortType.value){
