@@ -238,7 +238,7 @@ fun BottomNavGraph(navController: NavHostController, viewModel: MainViewModel, m
 
 @Composable
 fun SimplePopupNotification(viewModel: MainViewModel) {
-    val THIS_VERSION = 1001
+    val THIS_VERSION = 1002
     val openDialog = remember { mutableStateOf(true) }
 
     val newVersions = viewModel.newestVersion.value.filter { it.number > THIS_VERSION }
