@@ -39,6 +39,7 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ml.nandixer.aqwguide.domain.model.CombatClass
+import ml.nandixer.aqwguide.domain.model.Dps
 import kotlin.math.sqrt
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
@@ -245,20 +246,21 @@ fun ClassListItem(theClass: CombatClass, viewModel: MainViewModel){
                         modifier = Modifier.background(color = if(isSystemInDarkTheme()) Color.Black else Color.White)
                     ) {
                         // damage tests
+                        val otherDPS = if (viewModel.compareClass.value != null) viewModel.compareClass.value!!.enhancements[0].dps else Dps(null, null, null, null, null, null)
 
-                        Measurement("Classhall DPS", dps.classhall , dps.classhallNsod)
+                        Measurement("Classhall DPS", dps.classhall , dps.classhallNsod, otherDPS.classhall, otherDPS.classhallNsod)
 
                         if ((dps.classhall != null || dps.classhallNsod != null) && (dps.revenant != null || dps.revenantNsod != null)){
                             Spacer(modifier = Modifier.height(8.dp))
                         }
 
-                        Measurement("Revenant KPM", dps.revenant, dps.revenantNsod)
+                        Measurement("Revenant KPM", dps.revenant, dps.revenantNsod, otherDPS.revenant, otherDPS.revenantNsod)
 
                         if ((dps.revenant != null || dps.revenantNsod != null) && (dps.icestorm != null || dps.icestormNsod != null)){
                             Spacer(modifier = Modifier.height(8.dp))
                         }
 
-                        Measurement("Icestormarena KPM", dps.icestorm, dps.icestormNsod)
+                        Measurement("Icestormarena KPM", dps.icestorm, dps.icestormNsod, otherDPS.icestorm, otherDPS.icestormNsod)
 
                     }
 
@@ -310,18 +312,26 @@ fun Enhancements(text: String){
 }
 
 @Composable
-fun Measurement(label: String, base: Int?, nsod: Int?){
+fun Measurement(label: String, base: Int?, nsod: Int?, compBase: Int?, compNsod: Int?){
     if (base != null) {
         Row {
-            Text(text = "${label}:")
+            Text(text = "${label}:", color = if (compBase != null) Color.Blue else textColor())
             Spacer(modifier = Modifier.weight(1.0f))
-            Text(base.toString())
+            Text(base.toString(), color = if (compBase != null) Color.Blue else textColor())
+        }
+    }
+
+    if (compBase != null) {
+        Row {
+            Text(text = "${label}:", color=Color.Red)
+            Spacer(modifier = Modifier.weight(1.0f))
+            Text(compBase.toString(), color=Color.Red)
         }
     }
 
     if (nsod != null) {
         Row {
-            Text(text = "$label +51%:")
+            Text(text = "$label +51%:", color = if (compNsod != null) Color.Blue else textColor())
             Spacer(modifier = Modifier.weight(1.0f))
             if (base != null) {
                 val percent =
@@ -329,8 +339,26 @@ fun Measurement(label: String, base: Int?, nsod: Int?){
                 val growth = (percent * 100 - 100).toInt()
                 Text(text = "+$growth% ", color = Color.Green)
             }
-            Text(nsod.toString())
+            Text(nsod.toString(), color = if (compNsod != null) Color.Blue else textColor())
         }
     }
 
+    if (compNsod != null) {
+        Row {
+            Text(text = "$label +51%:", color=Color.Red)
+            Spacer(modifier = Modifier.weight(1.0f))
+            if (compBase != null) {
+                val percent =
+                    compNsod.toFloat() / compBase.toFloat()
+                val growth = (percent * 100 - 100).toInt()
+                Text(text = "+$growth% ", color = Color.Green)
+            }
+            Text(compNsod.toString(), color=Color.Red)
+        }
+    }
+
+}
+@Composable
+fun textColor(): Color {
+    return if (isSystemInDarkTheme()) Color.White else Color.Black
 }
