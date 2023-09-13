@@ -113,6 +113,8 @@ fun ClassListItem(theClass: CombatClass, viewModel: MainViewModel){
             if (isExpanded) {
                 Spacer(modifier = Modifier.height(16.dp))
 
+                theClass.description?.let { Text(text = it) }
+
                 Canvas(modifier = Modifier
                     .fillMaxWidth(.7f)
                     .aspectRatio(1f)

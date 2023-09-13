@@ -7,7 +7,10 @@ data class CombatClass(
     val names: List<String>,
     val ratings: Ratings,
     val combo: List<String>,
-    val best: String?
+    val best: String?,
+    val description: String?,
+    val video: String?,
+    val videos: List<String>?
 ){
     fun maxPerformance(): Dps {
 
