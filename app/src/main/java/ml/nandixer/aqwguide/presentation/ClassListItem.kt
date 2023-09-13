@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -36,6 +37,7 @@ import androidx.compose.ui.graphics.PointMode
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ml.nandixer.aqwguide.domain.model.CombatClass
@@ -113,7 +115,7 @@ fun ClassListItem(theClass: CombatClass, viewModel: MainViewModel){
             if (isExpanded) {
                 Spacer(modifier = Modifier.height(16.dp))
 
-                theClass.description?.let { Text(text = it) }
+                theClass.description?.let { Text(text = it, fontSize = 12.sp) }
 
                 Canvas(modifier = Modifier
                     .fillMaxWidth(.7f)
@@ -284,6 +286,16 @@ fun ClassListItem(theClass: CombatClass, viewModel: MainViewModel){
                         Text(line)
                     }
 
+                }
+
+                if (theClass.video != null || !theClass.videos.isNullOrEmpty()){
+                    Spacer(modifier = Modifier.height(16.dp))
+                }
+
+                // todo make these clickable
+                theClass.video?.let { Text(text = theClass.video, maxLines = 1, overflow = TextOverflow.Ellipsis) }
+                for (video in theClass.videos?: listOf()){
+                    Text(text = video, fontSize=12.sp)
                 }
 
                 Spacer(modifier = Modifier.height(16.dp))
