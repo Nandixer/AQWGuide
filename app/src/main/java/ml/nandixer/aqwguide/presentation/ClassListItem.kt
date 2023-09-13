@@ -112,6 +112,8 @@ fun ClassListItem(theClass: CombatClass, viewModel: MainViewModel){
             if (theClass.best?.isNotEmpty() == true){
                 Text(text = "Best ${theClass.best} class", fontSize = 12.sp)
             }
+            val drawColor = textColor().copy(alpha = 0.3f)
+            val drawColorStrong = textColor()
             if (isExpanded) {
                 Spacer(modifier = Modifier.height(16.dp))
 
@@ -162,8 +164,8 @@ fun ClassListItem(theClass: CombatClass, viewModel: MainViewModel){
                         drawPath(path, color = Color(0xFF0000BB))
                         drawPath(path, color = Color(0xFF0000FF), style= Stroke(4.dp.toPx()))
                     } else {
-                        drawPath(path, color = Color.LightGray)
-                        drawPath(path, color = Color.White, style= Stroke(4.dp.toPx()))
+                        drawPath(path, color = drawColor)
+                        drawPath(path, color = drawColorStrong, style= Stroke(4.dp.toPx()))
                     }
 
 
@@ -185,19 +187,19 @@ fun ClassListItem(theClass: CombatClass, viewModel: MainViewModel){
                     }
                     // until here
 
-                    drawLine(color = Color.White,
+                    drawLine(color = drawColor,
                         Offset(cX, cY-size.height/2),
                         Offset(cX, cY+size.height/2),
                         strokeWidth = 4f
                     )
 
-                    drawLine(color = Color.White,
+                    drawLine(color = drawColor,
                         Offset(cX+size.width*sqrt(3f)/2f/2, cY-size.height/2/2),
                         Offset(cX-size.width* sqrt(3f)/2f/2, cY+size.height/2/2),
                         strokeWidth = 4f
                     )
 
-                    drawLine(color = Color.White,
+                    drawLine(color = drawColor,
                         Offset(cX+size.width*sqrt(3f)/2f/2, cY+size.height/2/2),
                         Offset(cX-size.width* sqrt(3f)/2f/2, cY-size.height/2/2),
                         strokeWidth = 4f
@@ -219,7 +221,7 @@ fun ClassListItem(theClass: CombatClass, viewModel: MainViewModel){
 
                             ),
                             pointMode = PointMode.Polygon,
-                            color = Color.White.copy(alpha = 0.7f),
+                            color = drawColor,
                             strokeWidth = 4f
 
                         )
