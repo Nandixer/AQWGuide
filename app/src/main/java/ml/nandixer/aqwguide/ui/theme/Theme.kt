@@ -22,7 +22,8 @@ private val DarkColorScheme = darkColorScheme(
     onSurface = mainEcru,
 
     primary = mainEcru,
-    secondary = mainBlue
+    secondary = mainBlue,
+    tertiary = mainEcru.copy(alpha = 0.5f)
 
 )
 
@@ -32,7 +33,8 @@ private val LightColorScheme = lightColorScheme(
     onSurface = mainBlueDark,
 
     primary = mainBlueDark,
-    secondary = mainEcruDark
+    secondary = mainEcruDark,
+    tertiary = mainBlueDark.copy(alpha = 0.5f)
 
 )
 

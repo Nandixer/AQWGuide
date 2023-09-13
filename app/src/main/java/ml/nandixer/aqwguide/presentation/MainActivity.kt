@@ -197,11 +197,11 @@ fun BottomNavGraph(navController: NavHostController, viewModel: MainViewModel, m
                             }
                         },
                         colors = TextFieldDefaults.textFieldColors(
-                            containerColor = MaterialTheme.colorScheme.secondary,
+                            containerColor = MaterialTheme.colorScheme.surface,
                             textColor = MaterialTheme.colorScheme.onSurface,
                             unfocusedLeadingIconColor = MaterialTheme.colorScheme.onSurface,
                             unfocusedTrailingIconColor = MaterialTheme.colorScheme.onSurface,
-                            placeholderColor = MaterialTheme.colorScheme.surface
+                            placeholderColor = MaterialTheme.colorScheme.tertiary
                         )
                     )
                     DropdownMenu(expanded = isDropdownVisible, onDismissRequest = { isDropdownVisible = false }) {
