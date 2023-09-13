@@ -96,7 +96,7 @@ fun ClassListItem(theClass: CombatClass, viewModel: MainViewModel){
                     fontSize = 24.sp,
                     color = if (isExpanded && viewModel.compareClass.value!= null && viewModel.compareClass.value != theClass) Color.Blue
                         else (if (theClass == viewModel.compareClass.value && !isExpanded) Color.Red
-                                else (if (isSystemInDarkTheme()) Color.White else Color.Black)),
+                                else (textColor())),
                     modifier = Modifier.fillMaxWidth(labelRemainingSpace)
                 )
                 if (!isExpanded){
@@ -377,5 +377,5 @@ fun Measurement(label: String, base: Int?, nsod: Int?, compBase: Int?, compNsod:
 }
 @Composable
 fun textColor(): Color {
-    return if (isSystemInDarkTheme()) Color.White else Color.Black
+    return MaterialTheme.colorScheme.onSurface
 }
