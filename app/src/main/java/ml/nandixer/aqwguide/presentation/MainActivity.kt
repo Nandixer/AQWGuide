@@ -64,14 +64,14 @@ sealed class BottomBarScreen(
     object Ultras: BottomBarScreen(
         "ultras",
         "Ultras",
-        R.drawable.ic_classes_active,
-        R.drawable.ic_classes_inactive
+        R.drawable.ic_ultras_active,
+        R.drawable.ic_ultras_inactive
     )
     object Farms: BottomBarScreen(
         "farms",
         "Farms",
-        R.drawable.ic_classes_active,
-        R.drawable.ic_classes_inactive
+        R.drawable.ic_farming_active,
+        R.drawable.ic_farming_inactive
     )
 }
 @AndroidEntryPoint
