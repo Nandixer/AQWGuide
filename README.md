@@ -1,6 +1,8 @@
 # AQW Guide
 
 AQW Guide is a companion app made for the MMORPG Adventure Quest Worlds.
+`android`
+
 It offers guides for classes, ultra fights, with more features coming soon, such as farming and color-matching sets.
 
 ## Is this official?
