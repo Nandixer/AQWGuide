@@ -246,10 +246,10 @@ fun ClassListItem(theClass: CombatClass, viewModel: MainViewModel){
                         Text(enh.name)
                     }
 
-                    Enhancements(text = enh.weapon)
-                    Enhancements(text = enh.armor)
-                    Enhancements(text = enh.helm)
-                    Enhancements(text = enh.cape)
+                    Enhancements(text = enh.weapon, "Weapon")
+                    Enhancements(text = enh.armor, "Armor")
+                    Enhancements(text = enh.helm, "Helm")
+                    Enhancements(text = enh.cape, "Cape")
 
                     Spacer(modifier = Modifier.height(16.dp))
 
@@ -320,9 +320,21 @@ fun ClassListItem(theClass: CombatClass, viewModel: MainViewModel){
 @Composable
 fun Enhancements(text: String, hint: String? = null){
 
-    val imageVector = when(text){
+    var imageVector = when(text){
         "Arcana" -> R.drawable.arcana
         "Dauntless" -> R.drawable.dauntless
+        "Health Vamp (Luck)" -> R.drawable.lucky_awe_health
+        "Mana Vamp (Luck)" -> R.drawable.lucky_awe_mana
+        "Spiral Carve (Luck)" -> R.drawable.lucky_awe_spiral
+        "Awe Blast (Luck)" -> R.drawable.lucky_awe_blast
+        "Powerword Die (Luck)" -> R.drawable.lucky_awe_death
+        "Luck" -> when(hint){
+            "Weapon" -> R.drawable.lucky_weapon
+            "Armor" -> R.drawable.lucky_armor
+            "Helm" -> R.drawable.lucky_helm
+            "Cape" -> R.drawable.lucky_cape
+            else -> R.drawable.missing
+        }
         else -> R.drawable.missing
     }
 
