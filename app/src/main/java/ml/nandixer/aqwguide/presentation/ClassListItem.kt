@@ -7,6 +7,7 @@ import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.combinedClickable
@@ -317,7 +318,13 @@ fun ClassListItem(theClass: CombatClass, viewModel: MainViewModel){
 }
 
 @Composable
-fun Enhancements(text: String){
+fun Enhancements(text: String, hint: String? = null){
+
+    val imageVector = when(text){
+        "Arcana" -> R.drawable.arcana
+        "Dauntless" -> R.drawable.dauntless
+        else -> R.drawable.missing
+    }
 
     Row(modifier = Modifier
         .background(Color.Black)
@@ -327,7 +334,8 @@ fun Enhancements(text: String){
         .padding(start = 8.dp)
         .wrapContentHeight(align = Alignment.CenterVertically)
     ){
-        Icon(imageVector = ImageVector.vectorResource(R.drawable.ic_farming_active), contentDescription = "enhancement icon", modifier = Modifier.padding(end=8.dp))
+        Image(imageVector = ImageVector.vectorResource(imageVector), contentDescription = "enh icon", modifier = Modifier.padding(end = 8.dp))
+
         Text(text = text,
             color = Color.White,
 
