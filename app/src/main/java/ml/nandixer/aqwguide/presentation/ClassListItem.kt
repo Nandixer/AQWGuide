@@ -24,6 +24,7 @@ import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -35,11 +36,14 @@ import androidx.compose.ui.graphics.PaintingStyle.Companion.Stroke
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.PointMode
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import ml.nandixer.aqwguide.R
 import ml.nandixer.aqwguide.domain.model.CombatClass
 import ml.nandixer.aqwguide.domain.model.Dps
 import kotlin.math.sqrt
@@ -314,17 +318,22 @@ fun ClassListItem(theClass: CombatClass, viewModel: MainViewModel){
 
 @Composable
 fun Enhancements(text: String){
-    Text(text = text,
-        color = Color.White,
-        modifier = Modifier
-            .background(Color.Black)
-            .fillMaxWidth()
-            .height(32.dp)
-            .border(1.dp, Color.Gray)
-            .padding(start = 8.dp)
-            .wrapContentHeight(align = Alignment.CenterVertically)
 
-    )
+    Row(modifier = Modifier
+        .background(Color.Black)
+        .fillMaxWidth()
+        .height(32.dp)
+        .border(1.dp, Color.Gray)
+        .padding(start = 8.dp)
+        .wrapContentHeight(align = Alignment.CenterVertically)
+    ){
+        Icon(imageVector = ImageVector.vectorResource(R.drawable.ic_farming_active), contentDescription = "enhancement icon", modifier = Modifier.padding(end=8.dp))
+        Text(text = text,
+            color = Color.White,
+
+
+        )
+    }
 }
 
 @Composable
