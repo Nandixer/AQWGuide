@@ -13,6 +13,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -38,12 +39,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PaintingStyle.Companion.Stroke
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.PointMode
+import androidx.compose.ui.graphics.StrokeJoin
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.ExperimentalTextApi
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
@@ -52,7 +58,9 @@ import ml.nandixer.aqwguide.domain.model.CombatClass
 import ml.nandixer.aqwguide.domain.model.Dps
 import kotlin.math.sqrt
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class,
+    ExperimentalTextApi::class
+)
 @Composable
 fun ClassListItem(theClass: CombatClass, viewModel: MainViewModel){
     val ratings = theClass.ratings
@@ -299,7 +307,7 @@ fun ClassListItem(theClass: CombatClass, viewModel: MainViewModel){
                         if (doWeHaveLoadableIcons){
                             Row(
                                 modifier = Modifier.fillMaxWidth().height(70.dp),
-                                horizontalArrangement = Arrangement.Absolute.Left
+                                horizontalArrangement = Arrangement.Absolute.Left,
                             ){
                                 val spellNumbers = line.split(" ")
 
@@ -314,11 +322,35 @@ fun ClassListItem(theClass: CombatClass, viewModel: MainViewModel){
                                 )
 
                                 for (spell in spellNumbers){
-                                    AsyncImage(
-                                        model = mapping[spell],
-                                        contentDescription = "Sample Image",
-                                        modifier = Modifier.height(60.dp)
-                                    )
+                                    Box(
+                                        contentAlignment = Alignment.Center
+                                    ){
+                                        AsyncImage(
+                                            model = mapping[spell],
+                                            contentDescription = "Sample Image",
+                                            modifier = Modifier.height(60.dp)
+                                        )
+                                        // of the two identical texts,
+                                        // one is responsible for the black stroke
+                                        // the other for the white fill
+                                        Text(spell,
+                                            textAlign = TextAlign.Center,
+
+                                            style = TextStyle.Default.copy(
+                                                fontSize = 32.sp,
+                                                drawStyle = Stroke(
+                                                    miter = 10f,
+                                                    width = 12f,
+                                                    join = StrokeJoin.Round,
+                                                )
+                                            )
+                                        )
+                                        Text(spell,
+                                            textAlign = TextAlign.Center,
+                                            fontSize = 32.sp,
+                                            color=Color.White
+                                        )
+                                    }
                                 }
                             }
                         } else {
