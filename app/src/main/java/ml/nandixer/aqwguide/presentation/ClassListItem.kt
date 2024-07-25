@@ -391,6 +391,9 @@ fun Enhancements(text: String, hint: String? = null){
 
     var imageVector = when(text){
         "Arcana" -> R.drawable.arcana
+        "Vim" -> R.drawable.vim
+        "Vainglory" -> R.drawable.vainglory
+        "Penitence" -> R.drawable.penitence
         "Dauntless" -> R.drawable.dauntless
         "Health Vamp (Luck)" -> R.drawable.lucky_awe_health
         "Mana Vamp (Luck)" -> R.drawable.lucky_awe_mana
@@ -402,6 +405,10 @@ fun Enhancements(text: String, hint: String? = null){
             "Armor" -> R.drawable.lucky_armor
             "Helm" -> R.drawable.lucky_helm
             "Cape" -> R.drawable.lucky_cape
+            else -> R.drawable.missing
+        }
+        "Forge" -> when(hint){
+            "Helm" -> R.drawable.forge_helm
             else -> R.drawable.missing
         }
         else -> R.drawable.missing
