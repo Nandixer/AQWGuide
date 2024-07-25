@@ -10,7 +10,8 @@ data class CombatClass(
     val best: String?,
     val description: String?,
     val video: String?,
-    val videos: List<String>?
+    val videos: List<String>?,
+    val icons: SpellIconSet?
 ){
     fun maxPerformance(): Dps {
 

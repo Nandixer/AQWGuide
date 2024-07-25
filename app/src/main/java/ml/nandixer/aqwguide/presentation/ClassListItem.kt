@@ -12,10 +12,12 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -44,6 +46,7 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import ml.nandixer.aqwguide.R
 import ml.nandixer.aqwguide.domain.model.CombatClass
 import ml.nandixer.aqwguide.domain.model.Dps
@@ -288,7 +291,40 @@ fun ClassListItem(theClass: CombatClass, viewModel: MainViewModel){
                 val regex = "^[\\d\\s]+$".toRegex()
                 for (line in theClass.combo){
                     if (regex.matches(line)){
-                        Text(line, fontSize = 24.sp)
+
+                        val doWeHaveLoadableIcons = theClass.icons?.let {
+                            listOf(it.s1, it.s1, it.s3, it.s4, it.s5).all { it != null }
+                        }?:false
+
+                        if (doWeHaveLoadableIcons){
+                            Row(
+                                modifier = Modifier.fillMaxWidth().height(70.dp),
+                                horizontalArrangement = Arrangement.Absolute.Left
+                            ){
+                                val spellNumbers = line.split(" ")
+
+                                val mapping = mapOf(
+                                    "1" to theClass.icons?.s1,
+                                    "2" to theClass.icons?.s2,
+                                    "3" to theClass.icons?.s3,
+                                    "4" to theClass.icons?.s4,
+                                    "5" to theClass.icons?.s5,
+                                    "6" to "http://aqwwiki.wdfiles.com/local--files/image-tags/Passive_Skill.png"
+
+                                )
+
+                                for (spell in spellNumbers){
+                                    AsyncImage(
+                                        model = mapping[spell],
+                                        contentDescription = "Sample Image",
+                                        modifier = Modifier.height(60.dp)
+                                    )
+                                }
+                            }
+                        } else {
+                            Text(line, fontSize = 24.sp)
+                        }
+
                     }else{
                         Text(line)
                     }
