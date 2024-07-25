@@ -337,17 +337,18 @@ fun ClassListItem(theClass: CombatClass, viewModel: MainViewModel){
                                             textAlign = TextAlign.Center,
 
                                             style = TextStyle.Default.copy(
-                                                fontSize = 32.sp,
+                                                fontSize = 40.sp,
                                                 drawStyle = Stroke(
                                                     miter = 10f,
-                                                    width = 12f,
+                                                    width = 20f,
                                                     join = StrokeJoin.Round,
                                                 )
-                                            )
+                                            ),
+                                            color = Color.Black
                                         )
                                         Text(spell,
                                             textAlign = TextAlign.Center,
-                                            fontSize = 32.sp,
+                                            fontSize = 40.sp,
                                             color=Color.White
                                         )
                                     }
